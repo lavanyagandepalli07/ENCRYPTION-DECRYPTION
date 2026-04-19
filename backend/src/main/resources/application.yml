@@ -1,0 +1,85 @@
+spring:
+  application:
+    name: encryption-decryption-backend
+  profiles:
+    active: dev
+
+  servlet:
+    multipart:
+      max-file-size: 5GB
+      max-request-size: 5GB
+
+  security:
+    user:
+      name: admin
+      password: admin
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+# Supabase Configuration
+supabase:
+  url: ${SUPABASE_URL:https://your-project.supabase.co}
+  anonKey: ${SUPABASE_ANON_KEY:}
+  serviceRoleKey: ${SUPABASE_SERVICE_ROLE_KEY:}
+  jwtSecret: ${SUPABASE_JWT_SECRET:}
+
+# CORS Configuration
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+  max-age: 3600
+
+# Encryption Configuration
+encryption:
+  algorithm: AES/GCM/NoPadding
+  key-derivation-algorithm: PBKDF2WithHmacSHA256
+  pbkdf2-iterations: 100000
+  salt-length: 16
+  iv-length: 16
+  tag-length: 128
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.encryption: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+server:
+  error:
+    include-stacktrace: always
+
+logging:
+  level:
+    root: DEBUG
+    com.encryption: DEBUG
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+server:
+  error:
+    include-stacktrace: never
+
+logging:
+  level:
+    root: WARN
+    com.encryption: INFO

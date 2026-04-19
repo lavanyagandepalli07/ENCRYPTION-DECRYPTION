@@ -1,0 +1,33 @@
+# Gradle
+.gradle/
+build/
+gradle-*/
+*.gradle.bak
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build output
+target/
+out/
+*.class
+*.jar
+*.war
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+.env.local
