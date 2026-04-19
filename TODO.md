@@ -21,7 +21,7 @@
 
 ---
 
-## Phase 2: Encryption Core & Spring Boot Backend ✅ COMPLETED
+## Phase 2: Encryption Core & is  ✅ COMPLETED
 
 ### AES-256-GCM Encryption Service
 - [x] Implement `AesEncryptionService.java`

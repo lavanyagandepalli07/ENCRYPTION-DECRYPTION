@@ -5,11 +5,11 @@ import api from '../services/api';
 
 interface AuditLog {
   id: string;
-  userId: string;
-  operation: string;
-  fileName: string;
-  fileSize: number;
-  timestamp: string;
+  user_id: string;
+  action: string;
+  file_name: string;
+  file_size_bytes: number;
+  created_at: string;
 }
 
 const AuditLogPage = () => {
@@ -122,23 +122,23 @@ const AuditLogPage = () => {
                   {logs.map((log) => (
                     <tr key={log.id} className="hover:bg-gray-750 transition-colors bg-gray-800">
                       <td className="p-4 align-middle">
-                        {getOperationBadge(log.operation)}
+                        {getOperationBadge(log.action)}
                       </td>
                       <td className="p-4 align-middle">
                         <div className="flex items-center">
                           <FileType className="w-4 h-4 text-gray-500 mr-2" />
-                          <span className="font-medium text-gray-200 truncate max-w-[200px]" title={log.fileName}>
-                            {log.fileName}
+                          <span className="font-medium text-gray-200 truncate max-w-[200px]" title={log.file_name}>
+                            {log.file_name}
                           </span>
                         </div>
                       </td>
                       <td className="p-4 align-middle text-gray-400 text-sm">
-                        {formatSize(log.fileSize)}
+                        {formatSize(log.file_size_bytes)}
                       </td>
                       <td className="p-4 align-middle text-right text-gray-400 text-sm">
                         <div className="flex items-center justify-end">
                           <Calendar className="w-4 h-4 mr-2 text-gray-500" />
-                          {formatDate(log.timestamp)}
+                          {formatDate(log.created_at)}
                         </div>
                       </td>
                     </tr>
