@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FileUp, Lock, ArrowLeft, Loader2, ShieldCheck,
-  AlertCircle, Eye, EyeOff, X, FileText, Upload
+  AlertCircle, Eye, EyeOff, X, FileText, Upload, Download
 } from 'lucide-react';
 import api from '../services/api';
 import PassphraseStrength from '../components/PassphraseStrength';
@@ -104,6 +104,16 @@ const FileEncryptionPage = () => {
       });
 
       setSuccess(response.data);
+      
+      // Automatically trigger download
+      const downloadUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/download-encrypted/${response.data.fileId}`;
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.setAttribute('download', `encrypted_${response.data.fileName || 'file'}.bin`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
       setFile(null);
       setPassphrase('');
       setConfirmPassphrase('');
@@ -154,12 +164,24 @@ const FileEncryptionPage = () => {
                 <p><span className="text-gray-500">File Name:</span> {success.fileName}</p>
               </div>
               <p className="text-xs text-gray-500 mt-3">⚠️ Save the File ID — you'll need it to decrypt.</p>
-              <button
-                onClick={() => setSuccess(null)}
-                className="mt-4 text-sm text-gray-400 hover:text-white transition-colors"
-              >
-                Encrypt another file
-              </button>
+              
+              <div className="flex flex-col sm:flex-row gap-3 mt-6 w-full">
+                <a
+                  href={`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/download-encrypted/${success.fileId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20"
+                >
+                  <Download className="w-5 h-5" />
+                  Download Encrypted File
+                </a>
+                <button
+                  onClick={() => setSuccess(null)}
+                  className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2"
+                >
+                  Encrypt Another File
+                </button>
+              </div>
             </div>
           )}
 

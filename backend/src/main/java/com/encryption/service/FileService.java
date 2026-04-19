@@ -99,6 +99,17 @@ public class FileService {
         }
     }
 
+    /**
+     * Downloads raw encrypted file as a stream
+     */
+    public InputStream downloadEncryptedFileStream(String fileId, String userId) throws Exception {
+        // Validate file ownership
+        if (!validateFileOwnership(fileId, userId)) {
+            throw new IllegalArgumentException("Access denied: You do not own this file");
+        }
+        return supabaseClient.downloadFileAsStream(BUCKET_NAME, fileId);
+    }
+
 
     /**
      * Uploads encrypted file to Supabase Storage

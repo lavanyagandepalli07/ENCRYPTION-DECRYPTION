@@ -128,6 +128,33 @@ public class FileController {
     }
 
     /**
+     * Downloads the raw encrypted file
+     * GET /api/download-encrypted/{fileId}
+     */
+    @GetMapping("/download-encrypted/{fileId}")
+    public ResponseEntity<StreamingResponseBody> downloadEncryptedFile(
+            @PathVariable String fileId,
+            Authentication authentication) {
+        
+        String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
+
+        try {
+            return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileId + "\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(outputStream -> {
+                    try (InputStream is = fileService.downloadEncryptedFileStream(fileId, userId)) {
+                        is.transferTo(outputStream);
+                    } catch (Exception e) {
+                        throw new java.io.IOException("Encryption download failed", e);
+                    }
+                });
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
      * Retrieves audit logs for the authenticated user
      * GET /api/audit-logs
      */

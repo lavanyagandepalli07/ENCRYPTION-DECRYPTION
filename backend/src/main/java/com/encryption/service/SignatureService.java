@@ -70,6 +70,63 @@ public class SignatureService {
     }
 
     /**
+     * Creates a signed file by embedding the signature at the end.
+     * Format: [Original Data] + [Signature] + [4-byte Signature Length] + ["SIGNED" Magic String]
+     */
+    public byte[] createSignedFile(byte[] fileBytes, String privateKeyBase64) throws Exception {
+        String signatureBase64 = signFile(fileBytes, privateKeyBase64);
+        byte[] signature = Base64.getDecoder().decode(signatureBase64);
+        
+        byte[] signedFile = new byte[fileBytes.length + signature.length + 4 + 6];
+        System.arraycopy(fileBytes, 0, signedFile, 0, fileBytes.length);
+        System.arraycopy(signature, 0, signedFile, fileBytes.length, signature.length);
+        
+        // Add signature length (4 bytes)
+        int sigLen = signature.length;
+        signedFile[signedFile.length - 10] = (byte) (sigLen >> 24);
+        signedFile[signedFile.length - 9] = (byte) (sigLen >> 16);
+        signedFile[signedFile.length - 8] = (byte) (sigLen >> 8);
+        signedFile[signedFile.length - 7] = (byte) sigLen;
+        
+        // Add magic string "SIGNED" (6 bytes)
+        System.arraycopy("SIGNED".getBytes(), 0, signedFile, signedFile.length - 6, 6);
+        
+        return signedFile;
+    }
+
+    /**
+     * Verifies an embedded signature in a signed file.
+     */
+    public boolean verifyEmbeddedSignature(byte[] signedFileBytes, String publicKeyBase64) throws Exception {
+        if (signedFileBytes.length < 10) return false;
+        
+        // Check magic string
+        String magic = new String(signedFileBytes, signedFileBytes.length - 6, 6);
+        if (!"SIGNED".equals(magic)) {
+            // Fallback: maybe it's just the original file? Or wrong format.
+            return false;
+        }
+        
+        // Get signature length
+        int sigLen = ((signedFileBytes[signedFileBytes.length - 10] & 0xFF) << 24) |
+                     ((signedFileBytes[signedFileBytes.length - 9] & 0xFF) << 16) |
+                     ((signedFileBytes[signedFileBytes.length - 8] & 0xFF) << 8) |
+                     (signedFileBytes[signedFileBytes.length - 7] & 0xFF);
+                     
+        if (sigLen <= 0 || sigLen > signedFileBytes.length - 10) return false;
+        
+        int originalLen = signedFileBytes.length - 10 - sigLen;
+        byte[] originalData = new byte[originalLen];
+        byte[] signature = new byte[sigLen];
+        
+        System.arraycopy(signedFileBytes, 0, originalData, 0, originalLen);
+        System.arraycopy(signedFileBytes, originalLen, signature, 0, sigLen);
+        
+        String signatureBase64 = Base64.getEncoder().encodeToString(signature);
+        return verifySignature(originalData, signatureBase64, publicKeyBase64);
+    }
+
+    /**
      * Inner class to hold generated key pair results.
      */
     public static class KeyPairResult {

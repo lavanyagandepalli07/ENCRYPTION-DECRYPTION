@@ -1,0 +1,16 @@
+{
+  "name": "encryption-decryption-root",
+  "version": "1.0.0",
+  "description": "Root management for Encryption/Decryption project",
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && gradlew.bat bootRun",
+    "dev": "start npm run dev:frontend & start npm run dev:backend",
+    "install:frontend": "cd frontend && npm install",
+    "build:backend": "cd backend && gradlew build",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

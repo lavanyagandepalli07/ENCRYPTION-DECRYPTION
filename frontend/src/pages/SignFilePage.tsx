@@ -12,6 +12,7 @@ interface SignResult {
   algorithm: string;
   message: string;
   timestamp: number;
+  signedFile?: string; // Base64 encoded embedded signed file
 }
 
 interface KeyPair {
@@ -56,6 +57,32 @@ const SignFilePage = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const downloadBase64File = (base64: string, filename: string) => {
+    const binary = atob(base64);
+    const array = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) array[i] = binary.charCodeAt(i);
+    const blob = new Blob([array], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const downloadFile = (f: File) => {
+    const url = URL.createObjectURL(f);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = f.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
@@ -267,21 +294,40 @@ const SignFilePage = () => {
             </div>
 
             <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-4">
                 <span className="text-sm font-semibold text-gray-300">Digital Signature (Base64)</span>
-                <div className="flex gap-2">
-                  <button onClick={() => copyToClipboard(result.signature, 'sig')} className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs text-gray-300 transition-colors">
-                    {copiedField === 'sig' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => copyToClipboard(result.signature, 'sig')} 
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-xl text-sm text-gray-300 transition-all border border-gray-600 hover:border-orange-500/30"
+                  >
+                    {copiedField === 'sig' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                     {copiedField === 'sig' ? 'Copied!' : 'Copy'}
                   </button>
-                  <button onClick={() => downloadText(result.signature, `${result.fileName}.sig.txt`)} className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs text-gray-300 transition-colors">
-                    <Download className="w-3.5 h-3.5" /> Download
+                  <button 
+                    onClick={() => downloadText(result.signature, `${result.fileName}.sig`)} 
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-xl text-sm text-gray-300 transition-all border border-gray-600 hover:border-orange-500/30"
+                  >
+                    <Download className="w-4 h-4" /> Detached Sig
+                  </button>
+                  <button 
+                    onClick={() => result.signedFile ? downloadBase64File(result.signedFile, `signed_${result.fileName}`) : downloadFile(file!)} 
+                    className="flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-500 rounded-xl text-sm text-white font-bold transition-all shadow-lg shadow-orange-500/20"
+                  >
+                    <Download className="w-4 h-4" /> Download Signed File
                   </button>
                 </div>
               </div>
-              <div className="bg-gray-900 rounded-lg p-4">
-                <p className="text-xs font-mono text-orange-400 break-all leading-relaxed">{result.signature}</p>
+              <div className="bg-gray-900 rounded-xl p-5 border border-gray-700/50 relative group">
+                <p className="text-xs font-mono text-orange-400/90 break-all leading-relaxed max-h-32 overflow-y-auto custom-scrollbar">
+                  {result.signature}
+                </p>
+                <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none rounded-b-xl" />
               </div>
+              <p className="mt-4 text-xs text-gray-500 flex items-center gap-2">
+                <AlertCircle className="w-3.5 h-3.5" />
+                This .sig file contains the cryptographic proof for "{result.fileName}".
+              </p>
             </div>
 
             <button

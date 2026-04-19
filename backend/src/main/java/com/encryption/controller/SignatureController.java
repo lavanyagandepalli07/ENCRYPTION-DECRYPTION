@@ -69,13 +69,17 @@ public class SignatureController {
 
             byte[] fileBytes = file.getBytes();
             String signature = signatureService.signFile(fileBytes, privateKeyBase64.trim());
+            byte[] signedFileBytes = signatureService.createSignedFile(fileBytes, privateKeyBase64.trim());
+            String signedFileBase64 = Base64.getEncoder().encodeToString(signedFileBytes);
 
             Map<String, Object> response = new HashMap<>();
             response.put("signature", signature);
+            response.put("signedFile", signedFileBase64);
             response.put("fileName", file.getOriginalFilename());
             response.put("fileSize", fileBytes.length);
+            response.put("signedFileSize", signedFileBytes.length);
             response.put("algorithm", "SHA256withRSA");
-            response.put("message", "File signed successfully");
+            response.put("message", "File signed successfully with embedded signature");
             response.put("timestamp", System.currentTimeMillis());
 
             String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
@@ -98,28 +102,37 @@ public class SignatureController {
     @PostMapping(value = "/verify", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> verifySignature(
             @RequestParam("file") MultipartFile file,
-            @RequestParam("signature") String signatureBase64,
+            @RequestParam(value = "signature", required = false) String signatureBase64,
             @RequestParam("publicKey") String publicKeyBase64,
             Authentication authentication) {
         try {
             if (file.isEmpty()) {
                 return ResponseEntity.badRequest().body(Map.of("error", "File is required"));
             }
-            if (signatureBase64 == null || signatureBase64.isBlank()) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Signature is required"));
-            }
             if (publicKeyBase64 == null || publicKeyBase64.isBlank()) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Public key is required"));
             }
 
             byte[] fileBytes = file.getBytes();
-            boolean valid = signatureService.verifySignature(fileBytes, signatureBase64.trim(), publicKeyBase64.trim());
+            boolean valid;
+            String mode;
+
+            if (signatureBase64 != null && !signatureBase64.isBlank()) {
+                // Verify detached signature
+                valid = signatureService.verifySignature(fileBytes, signatureBase64.trim(), publicKeyBase64.trim());
+                mode = "Detached";
+            } else {
+                // Try to verify embedded signature
+                valid = signatureService.verifyEmbeddedSignature(fileBytes, publicKeyBase64.trim());
+                mode = "Embedded";
+            }
 
             Map<String, Object> response = new HashMap<>();
             response.put("valid", valid);
             response.put("fileName", file.getOriginalFilename());
-            response.put("message", valid ? "✅ Signature is VALID — file is authentic and unaltered."
-                    : "❌ Signature is INVALID — file may have been tampered with.");
+            response.put("verificationMode", mode);
+            response.put("message", valid ? "✅ " + mode + " signature is VALID — file is authentic and unaltered."
+                    : "❌ " + mode + " signature is INVALID — file may have been tampered with or format is incorrect.");
             response.put("timestamp", System.currentTimeMillis());
 
             String userId = (authentication != null) ? authentication.getName() : "anonymous-user";

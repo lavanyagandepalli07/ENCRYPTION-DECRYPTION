@@ -40,7 +40,7 @@ const VerifySignaturePage = () => {
 
   const handleVerify = async () => {
     if (!file) { setError('Please select the file to verify.'); return; }
-    if (!signatureInput.trim()) { setError('Please paste the digital signature.'); return; }
+    // Signature is now optional for embedded verification
     if (!publicKeyInput.trim()) { setError('Please paste the public key.'); return; }
 
     setIsLoading(true);
@@ -50,7 +50,9 @@ const VerifySignaturePage = () => {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('signature', signatureInput.trim());
+      if (signatureInput.trim()) {
+        formData.append('signature', signatureInput.trim());
+      }
       formData.append('publicKey', publicKeyInput.trim());
 
       const response = await api.post('/signature/verify', formData, {
@@ -151,11 +153,14 @@ const VerifySignaturePage = () => {
 
           {/* Signature Input */}
           <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-3">Digital Signature (Base64)</label>
+            <label className="block text-sm font-semibold text-gray-300 mb-3">
+              Digital Signature (Base64) 
+              <span className="ml-2 text-xs font-normal text-gray-500">(Optional if signature is embedded)</span>
+            </label>
             <textarea
               value={signatureInput}
               onChange={(e) => setSignatureInput(e.target.value)}
-              placeholder="Paste the Base64-encoded signature here..."
+              placeholder="Paste the Base64-encoded signature here, or leave blank if verifying a signed file..."
               rows={4}
               className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-sm font-mono text-gray-300 placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors resize-none"
             />
