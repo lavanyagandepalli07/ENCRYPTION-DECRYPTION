@@ -186,7 +186,9 @@ public class SupabaseClient {
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Failed to insert record: " + response.body().string());
+                String errorBody = response.body() != null ? response.body().string() : "No error body";
+                System.err.println("SUPABASE ERROR [INSERT]: " + response.code() + " " + response.message() + " - " + errorBody);
+                throw new IOException("Failed to insert record: " + response.message() + " - " + errorBody);
             }
         }
     }
@@ -210,6 +212,7 @@ public class SupabaseClient {
         try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 String errorBody = response.body() != null ? response.body().string() : "No error body";
+                System.err.println("SUPABASE ERROR [QUERY]: " + response.code() + " " + response.message() + " - " + errorBody);
                 throw new IOException("Failed to query records: " + response.message() + " - " + errorBody);
             }
             return response.body().string();

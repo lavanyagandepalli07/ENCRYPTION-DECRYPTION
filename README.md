@@ -24,6 +24,13 @@ A full-stack, production-ready file encryption and decryption web application bu
 | **Build** | Maven 3.9 |
 | **Containerization** | Docker + docker-compose |
 
+## 📚 Documentation
+
+- [API Documentation](API_DOCUMENTATION.md)
+- [Security Best Practices](SECURITY_BEST_PRACTICES.md)
+- [Troubleshooting Guide](TROUBLESHOOTING.md)
+- [Project Roadmap](ROADMAP.md)
+
 ## 🚀 Quick Start
 
 ### Prerequisites
