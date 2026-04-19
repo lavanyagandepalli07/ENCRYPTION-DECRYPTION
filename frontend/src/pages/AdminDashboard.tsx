@@ -62,7 +62,13 @@ const AdminDashboard = () => {
       (log.profiles?.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
       log.action.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesAction = actionFilter === 'ALL' || log.action === actionFilter;
+    const matchesAction = actionFilter === 'ALL' || 
+      log.action === actionFilter || 
+      (actionFilter === 'ENCRYPT' && (log.action === 'ENCRYPT' || log.action === 'TEXT_ENCRYPT')) ||
+      (actionFilter === 'DECRYPT' && (log.action === 'DECRYPT' || log.action === 'TEXT_DECRYPT')) ||
+      (actionFilter === 'SIGN' && (log.action === 'FILE_SIGN' || log.action === 'KEY_GENERATE')) ||
+      (actionFilter === 'VERIFY' && (log.action === 'SIGNATURE_VERIFY')) ||
+      (actionFilter === 'INTEGRITY' && (log.action === 'INTEGRITY_CHECK'));
     
     return matchesSearch && matchesAction;
   });
@@ -137,10 +143,11 @@ const AdminDashboard = () => {
             className="bg-slate-950 border border-slate-800 rounded-2xl px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-bold text-slate-400"
           >
             <option value="ALL">All Actions</option>
-            <option value="ENCRYPT">Encryption</option>
-            <option value="DECRYPT">Decryption</option>
-            <option value="SIGN">Signature</option>
+            <option value="ENCRYPT">Encryption (File/Text)</option>
+            <option value="DECRYPT">Decryption (File/Text)</option>
+            <option value="SIGN">Signatures/Keys</option>
             <option value="VERIFY">Verification</option>
+            <option value="INTEGRITY">Integrity Checks</option>
           </select>
           
           <button className="bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all font-bold">
@@ -204,12 +211,13 @@ const AdminDashboard = () => {
                       </td>
                       <td className="px-8 py-6">
                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                          log.action === 'ENCRYPT' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
-                          log.action === 'DECRYPT' ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' :
-                          log.action === 'SIGN' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
+                          log.action.includes('ENCRYPT') ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
+                          log.action.includes('DECRYPT') ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' :
+                          log.action.includes('SIGN') || log.action.includes('KEY') ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
+                          log.action.includes('INTEGRITY') ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20' :
                           'bg-slate-500/10 text-slate-400 border-slate-500/20'
                         }`}>
-                          {log.action}
+                          {log.action.replace('_', ' ')}
                         </span>
                       </td>
                       <td className="px-8 py-6">
