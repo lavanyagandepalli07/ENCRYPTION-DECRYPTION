@@ -10,11 +10,13 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import SessionWarning from './components/SessionWarning';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <SessionWarning />
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<LoginPage />} />
