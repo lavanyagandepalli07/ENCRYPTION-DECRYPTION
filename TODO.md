@@ -21,38 +21,38 @@
 
 ---
 
-## Phase 2: Encryption Core & Spring Boot Backend 🚀 IN PROGRESS
+## Phase 2: Encryption Core & Spring Boot Backend ✅ COMPLETED
 
 ### AES-256-GCM Encryption Service
-- [ ] Implement `AesEncryptionService.java`
-  - [ ] Encryption method with PBKDF2-SHA256 key derivation (100k iterations)
-  - [ ] Decryption method with IV extraction
-  - [ ] Random IV generation per encryption
-  - [ ] GCM tag validation
-  - [ ] Unit tests for encrypt/decrypt consistency
-- [ ] Implement `EncryptedOutput` model (IV + ciphertext + GCM tag)
+- [x] Implement `AesEncryptionService.java`
+  - [x] Encryption method with PBKDF2-SHA256 key derivation (100k iterations)
+  - [x] Decryption method with IV extraction
+  - [x] Random IV generation per encryption
+  - [x] GCM tag validation
+  - [x] Unit tests for encrypt/decrypt consistency
+- [x] Implement `EncryptedOutput` model (IV + ciphertext + GCM tag)
 
 ### Spring Boot Services & Controllers
-- [ ] Implement `FileService.java`
-  - [ ] Upload encrypted file to Supabase Storage
-  - [ ] Download and decrypt file from Supabase Storage
-  - [ ] Streaming support for large files
-  - [ ] File ownership validation
-- [ ] Implement `FileController.java`
-  - [ ] `POST /api/encrypt` endpoint (multipart file + passphrase)
-  - [ ] `GET /api/decrypt/{fileId}` endpoint (with passphrase in request)
-  - [ ] `GET /api/audit-logs` endpoint
-  - [ ] Input validation and error handling
-- [ ] Implement `AuditService.java`
-  - [ ] Async logging to Supabase
-  - [ ] Log encryption operations
-  - [ ] Log decryption operations
+- [x] Implement `FileService.java`
+  - [x] Upload encrypted file to Supabase Storage
+  - [x] Download and decrypt file from Supabase Storage
+  - [x] Streaming support for large files
+  - [x] File ownership validation
+- [x] Implement `FileController.java`
+  - [x] `POST /api/encrypt` endpoint (multipart file + passphrase)
+  - [x] `GET /api/decrypt/{fileId}` endpoint (with passphrase in request)
+  - [x] `GET /api/audit-logs` endpoint
+  - [x] Input validation and error handling
+- [x] Implement `AuditService.java`
+  - [x] Async logging to Supabase
+  - [x] Log encryption operations
+  - [x] Log decryption operations
 
 ### Supabase Integration
-- [ ] Initialize Supabase client in Spring Boot
-- [ ] Implement JWT token validation using Supabase public keys
-- [ ] Implement Supabase Storage integration (upload/download)
-- [ ] Implement Supabase insert for audit logs
+- [x] Initialize Supabase client in Spring Boot
+- [x] Implement JWT token validation using Supabase public keys
+- [x] Implement Supabase Storage integration (upload/download)
+- [x] Implement Supabase insert for audit logs
 
 ### Configuration & Security
 - [ ] Test multipart file upload with large files (5GB+)
@@ -92,7 +92,7 @@
 
 ---
 
-## Phase 4: Integration & End-to-End Testing
+## Phase 5: Integration & End-to-End Testing
 
 - [ ] Test full encryption workflow (upload → encrypt → verify in Storage)
 - [ ] Test full decryption workflow (download → decrypt → compare original)
@@ -107,7 +107,7 @@
 
 ---
 
-## Phase 5: Deployment & Documentation
+## Phase 6: Deployment & Documentation
 
 ### Docker & Deployment
 - [ ] Build backend Docker image
@@ -131,11 +131,29 @@
 - [ ] Implement request signing/verification
 - [ ] Add CSRF protection if needed
 
-### Future Enhancements (Phase 2+)
-- [ ] Text encryption/decryption (Menu items 3 & 4)
-- [ ] File signing and signature verification (Menu items 5 & 6)
-- [ ] File integrity check (Menu item 7)
-- [ ] View detailed audit logs (Menu item 8)
+### Phase 2: Text Encryption ✅ COMPLETED
+- [x] Text encryption/decryption endpoints
+- [x] Frontend UI for text encryption/decryption (Menu items 3 & 4)
+
+### Phase 4: Signatures, Integrity & Auditing (Menu Items 5-8)
+
+#### File Signing & Verification (Items 5 & 6)
+- [ ] Implement `SignatureService.java` (RSA/ECDSA key pair generation, file signing, and verification)
+- [ ] Create `SignatureController.java` with `/api/sign` and `/api/verify` endpoints
+- [ ] Create frontend `SignFilePage.tsx` UI with file upload and key management
+- [ ] Create frontend `VerifySignaturePage.tsx` UI to upload file and signature for verification
+
+#### File Integrity Check (Item 7)
+- [ ] Implement `IntegrityService.java` for calculating cryptographic file hashes (SHA-256, SHA-512, etc.)
+- [ ] Create endpoint `/api/integrity/hash` to return file hashes
+- [ ] Create frontend `CheckIntegrityPage.tsx` UI to compute and compare hashes
+
+#### Audit Log Viewer (Item 8)
+- [ ] Update frontend routing in `App.tsx` for `/audit-log`
+- [ ] Create frontend `AuditLogPage.tsx` with a data table/grid to display records, filter, and sort
+- [ ] Connect frontend to existing `GET /api/audit-logs` backend endpoint
+
+### Future Enhancements (Phase 7+)
 - [ ] Support additional algorithms (Twofish, Blowfish, RSA, ECC)
 - [ ] Batch file encryption
 - [ ] Scheduled encryption tasks

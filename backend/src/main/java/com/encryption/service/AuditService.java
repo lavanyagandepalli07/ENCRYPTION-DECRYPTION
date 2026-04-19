@@ -47,11 +47,19 @@ public class AuditService {
      */
     @Async
     public void logDecryption(String userId, String fileName, long fileSizeBytes) {
+        logActionAsync(userId, "DECRYPT", fileName, fileSizeBytes);
+    }
+
+    /**
+     * Generic asynchronous action logger
+     */
+    @Async
+    public void logActionAsync(String userId, String action, String fileName, long fileSizeBytes) {
         try {
             AuditLogDTO auditLog = new AuditLogDTO(
                 UUID.randomUUID().toString(),
                 userId,
-                "DECRYPT",
+                action,
                 fileName,
                 fileSizeBytes,
                 Instant.now().toString()
@@ -59,8 +67,7 @@ public class AuditService {
 
             insertAuditLog(auditLog);
         } catch (Exception e) {
-            // Log error but don't throw (async operation)
-            System.err.println("Failed to log decryption operation: " + e.getMessage());
+            System.err.println("Failed to log " + action + " operation: " + e.getMessage());
         }
     }
 
