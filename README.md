@@ -9,6 +9,8 @@ A full-stack, production-ready file encryption and decryption web application bu
 - 🔑 **Supabase Authentication** - Secure email/password login
 - 📊 **Audit Logging** - Track all encryption/decryption operations
 - ✍️ **Digital Signatures** - RSA-SHA256 signing (Detached & Embedded modes)
+- 🛡️ **Admin Console** - Centralized management for system-wide audit logs
+- 👥 **User Management** - Role-based access control (Admin vs User)
 - 📥 **Auto-Download** - Immediate encrypted file download after processing
 - 🎨 **Modern UI** - React with Tailwind CSS
 - 🐳 **Docker Support** - Containerized deployment
@@ -289,6 +291,13 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
    - Anon Key (Settings → API)
    - Service Role Key (Settings → API)
    - JWT Secret (Settings → API)
+
+4. **Elevated Access (Admin Panel)**:
+   To enable administrative features, execute the additional setup script:
+   ```sql
+   -- Execute sql/admin_setup.sql in Supabase SQL editor
+   ```
+   This enables system-wide log viewing and user management.
 
 ## 🧪 Testing
 

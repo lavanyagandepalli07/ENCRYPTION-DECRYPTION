@@ -139,7 +139,7 @@
 - [x] Frontend UI for text encryption/decryption (Menu items 3 & 4)
 
 ### Phase 4: Signatures, Integrity & Auditing (Menu Items 5-8) ✅ COMPLETED
-
+c
 #### File Signing & Verification (Items 5 & 6)
 - [x] Implement `SignatureService.java` (RSA key pair generation, Detached & Embedded file signing, and verification)
 - [x] Create `SignatureController.java` with `/api/signature/sign`, `/api/signature/verify`, and `/api/signature/generate-keypair` endpoints (Supports Detached & Embedded modes)
