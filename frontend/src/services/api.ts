@@ -20,6 +20,24 @@ api.interceptors.request.use(async (config) => {
   return Promise.reject(error);
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    // If error is 401 and we haven't retried yet
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const { data: { session }, error: refreshError } = await supabase.auth.refreshSession();
+      
+      if (!refreshError && session?.access_token) {
+        originalRequest.headers.Authorization = `Bearer ${session.access_token}`;
+        return api(originalRequest);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const textService = {
   encryptText: async (text: string, passphrase: string) => {
     const response = await api.post('/text/encrypt', { text, passphrase });

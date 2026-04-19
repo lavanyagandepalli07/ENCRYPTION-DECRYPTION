@@ -48,9 +48,8 @@ public class IntegrityController {
             response.put("message", "Hashes computed successfully");
             response.put("timestamp", System.currentTimeMillis());
 
-            if (authentication != null && authentication.getName() != null) {
-                auditService.logActionAsync(authentication.getName(), "INTEGRITY_CHECK", file.getOriginalFilename(), fileBytes.length);
-            }
+            String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
+            auditService.logActionAsync(userId, "INTEGRITY_CHECK", file.getOriginalFilename(), fileBytes.length);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {

@@ -22,7 +22,7 @@ public class SignatureService {
      * Generates a new RSA key pair (2048-bit).
      * Returns Base64-encoded private and public keys.
      */
-    public KeyPairResult generateKeyPair() throws NoSuchAlgorithmException {
+    public KeyPairResult generateKeyPair() throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance(KEY_ALGORITHM, "BC");
         keyGen.initialize(KEY_SIZE, new SecureRandom());
         KeyPair keyPair = keyGen.generateKeyPair();

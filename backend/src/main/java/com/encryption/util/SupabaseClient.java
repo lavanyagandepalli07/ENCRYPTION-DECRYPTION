@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+
 import java.util.Map;
 
 @Component
@@ -33,6 +35,7 @@ public class SupabaseClient {
      * Uploads encrypted file to Supabase Storage bucket
      */
     public void uploadFile(String bucketName, String filePath, byte[] fileContent) throws IOException {
+        ensureBucketExists(bucketName);
         String url = supabaseUrl + "/storage/v1/object/" + bucketName + "/" + filePath;
 
         RequestBody body = RequestBody.create(fileContent, MediaType.parse("application/octet-stream"));
@@ -40,17 +43,87 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(url)
             .header("Authorization", "Bearer " + serviceRoleKey)
-            .header("apikey", anonKey)
+            .header("apikey", serviceRoleKey)
             .header("Content-Type", "application/octet-stream")
             .post(body)
             .build();
 
-        try (Response response = httpClient.newCall(request).execute()) {
+    try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Failed to upload file: " + response.body().string());
             }
         }
     }
+
+    /**
+     * Ensures that a Supabase Storage bucket exists, creating it if necessary
+     */
+    public void ensureBucketExists(String bucketName) throws IOException {
+        String url = supabaseUrl + "/storage/v1/bucket";
+
+        // Check if bucket exists
+        Request checkRequest = new Request.Builder()
+            .url(url + "/" + bucketName)
+            .header("Authorization", "Bearer " + serviceRoleKey)
+            .header("apikey", serviceRoleKey)
+            .get()
+            .build();
+
+        try (Response response = httpClient.newCall(checkRequest).execute()) {
+            if (response.isSuccessful()) {
+                return; // Bucket exists
+            }
+        }
+
+        // Create bucket if it doesn't exist
+        Map<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("id", bucketName);
+        bodyMap.put("name", bucketName);
+        bodyMap.put("public", false);
+
+        String jsonBody = objectMapper.writeValueAsString(bodyMap);
+        RequestBody body = RequestBody.create(jsonBody, MediaType.parse("application/json"));
+
+        Request createRequest = new Request.Builder()
+            .url(url)
+            .header("Authorization", "Bearer " + serviceRoleKey)
+            .header("apikey", serviceRoleKey)
+            .header("Content-Type", "application/json")
+            .post(body)
+            .build();
+
+        try (Response response = httpClient.newCall(createRequest).execute()) {
+            if (!response.isSuccessful()) {
+                String error = response.body() != null ? response.body().string() : "Unknown error";
+                // If it already exists (race condition), just ignore
+                if (!error.contains("already exists")) {
+                    throw new IOException("Failed to create bucket: " + error);
+                }
+            }
+        }
+    }
+
+    /**
+     * Downloads encrypted file from Supabase Storage bucket as a stream
+     */
+    public InputStream downloadFileAsStream(String bucketName, String filePath) throws IOException {
+        String url = supabaseUrl + "/storage/v1/object/" + bucketName + "/" + filePath;
+
+        Request request = new Request.Builder()
+            .url(url)
+            .header("Authorization", "Bearer " + serviceRoleKey)
+            .header("apikey", serviceRoleKey)
+            .get()
+            .build();
+
+        Response response = httpClient.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            response.close();
+            throw new IOException("Failed to download file: " + response.message());
+        }
+        return response.body().byteStream();
+    }
+
 
     /**
      * Downloads encrypted file from Supabase Storage bucket
@@ -61,7 +134,7 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(url)
             .header("Authorization", "Bearer " + serviceRoleKey)
-            .header("apikey", anonKey)
+            .header("apikey", serviceRoleKey)
             .get()
             .build();
 
@@ -82,7 +155,7 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(url)
             .header("Authorization", "Bearer " + serviceRoleKey)
-            .header("apikey", anonKey)
+            .header("apikey", serviceRoleKey)
             .delete()
             .build();
 
@@ -105,7 +178,7 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(url)
             .header("Authorization", "Bearer " + serviceRoleKey)
-            .header("apikey", anonKey)
+            .header("apikey", serviceRoleKey)
             .header("Content-Type", "application/json")
             .header("Prefer", "return=minimal")
             .post(body)
@@ -130,13 +203,14 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(url)
             .header("Authorization", "Bearer " + serviceRoleKey)
-            .header("apikey", anonKey)
+            .header("apikey", serviceRoleKey)
             .get()
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Failed to query records: " + response.message());
+                String errorBody = response.body() != null ? response.body().string() : "No error body";
+                throw new IOException("Failed to query records: " + response.message() + " - " + errorBody);
             }
             return response.body().string();
         }
@@ -154,13 +228,14 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(url)
             .header("Authorization", "Bearer " + serviceRoleKey)
-            .header("apikey", anonKey)
+            .header("apikey", serviceRoleKey)
             .delete()
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Failed to delete records: " + response.message());
+                String errorBody = response.body() != null ? response.body().string() : "No error body";
+                throw new IOException("Failed to delete records: " + response.message() + " - " + errorBody);
             }
         }
     }

@@ -25,16 +25,16 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
 
-          {/* Protected Routes */}
-          <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-          <Route path="/text-encrypt" element={<ProtectedRoute><TextEncryptionPage /></ProtectedRoute>} />
-          <Route path="/text-decrypt" element={<ProtectedRoute><TextDecryptionPage /></ProtectedRoute>} />
-          <Route path="/file-encrypt" element={<ProtectedRoute><FileEncryptionPage /></ProtectedRoute>} />
-          <Route path="/file-decrypt" element={<ProtectedRoute><FileDecryptionPage /></ProtectedRoute>} />
-          <Route path="/sign-file" element={<ProtectedRoute><SignFilePage /></ProtectedRoute>} />
-          <Route path="/verify-signature" element={<ProtectedRoute><VerifySignaturePage /></ProtectedRoute>} />
-          <Route path="/check-integrity" element={<ProtectedRoute><CheckIntegrityPage /></ProtectedRoute>} />
-          <Route path="/audit-log" element={<ProtectedRoute><AuditLogPage /></ProtectedRoute>} />
+          {/* All Routes now Public */}
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/text-encrypt" element={<TextEncryptionPage />} />
+          <Route path="/text-decrypt" element={<TextDecryptionPage />} />
+          <Route path="/file-encrypt" element={<FileEncryptionPage />} />
+          <Route path="/file-decrypt" element={<FileDecryptionPage />} />
+          <Route path="/sign-file" element={<SignFilePage />} />
+          <Route path="/verify-signature" element={<VerifySignaturePage />} />
+          <Route path="/check-integrity" element={<CheckIntegrityPage />} />
+          <Route path="/audit-log" element={<AuditLogPage />} />
         </Routes>
       </Router>
     </AuthProvider>

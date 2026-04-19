@@ -76,16 +76,33 @@ public class AuditService {
      */
     public List<AuditLogDTO> getAuditLogs(String userId) throws Exception {
         // Query Supabase using RLS policy (user can only see their own logs)
-        String filter = "user_id=eq." + userId + "&order=created_at.desc";
-        String response = supabaseClient.queryRecords(TABLE_NAME, filter);
+        String userFilter;
+        if ("anonymous-user".equals(userId) || userId == null || userId.isEmpty()) {
+            userFilter = "user_id=is.null";
+        } else {
+            userFilter = "user_id=eq." + userId;
+        }
+        
+        // Explicitly include select=* and ensure proper parameter separation
+        String filter = "select=*&" + userFilter + "&order=created_at.desc";
+        
+        String response;
+        try {
+            response = supabaseClient.queryRecords(TABLE_NAME, filter);
+        } catch (Exception e) {
+            System.err.println("Database query failed for table " + TABLE_NAME + ": " + e.getMessage());
+            throw new Exception("Failed to query records: " + e.getMessage());
+        }
 
         // Parse JSON response
         List<AuditLogDTO> auditLogs = new ArrayList<>();
-        try {
-            AuditLogDTO[] logs = objectMapper.readValue(response, AuditLogDTO[].class);
-            auditLogs = Arrays.asList(logs);
-        } catch (Exception e) {
-            System.err.println("Failed to parse audit logs: " + e.getMessage());
+        if (response != null && !response.trim().isEmpty() && !response.equals("null")) {
+            try {
+                AuditLogDTO[] logs = objectMapper.readValue(response, AuditLogDTO[].class);
+                auditLogs = Arrays.asList(logs);
+            } catch (Exception e) {
+                System.err.println("Failed to parse audit logs JSON: " + e.getMessage() + ". Response: " + response);
+            }
         }
 
         return auditLogs;
@@ -97,7 +114,15 @@ public class AuditService {
     private void insertAuditLog(AuditLogDTO auditLog) throws Exception {
         Map<String, Object> data = new HashMap<>();
         data.put("id", auditLog.getId());
-        data.put("user_id", auditLog.getUserId());
+        
+        // Handle anonymous user by setting user_id to null (database UUID type)
+        String userId = auditLog.getUserId();
+        if ("anonymous-user".equals(userId) || userId == null || userId.isEmpty()) {
+            data.put("user_id", null);
+        } else {
+            data.put("user_id", userId);
+        }
+        
         data.put("action", auditLog.getAction());
         data.put("file_name", auditLog.getFileName());
         data.put("file_size_bytes", auditLog.getFileSizeBytes());

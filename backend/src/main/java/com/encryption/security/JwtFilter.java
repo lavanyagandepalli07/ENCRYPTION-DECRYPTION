@@ -26,8 +26,11 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Skip JWT validation for health check endpoint
-        if (request.getRequestURI().equals("/api/health")) {
+        String path = request.getRequestURI();
+        String method = request.getMethod();
+
+        // Skip JWT validation for health check and OPTIONS requests
+        if (path.equals("/api/health") || "OPTIONS".equalsIgnoreCase(method)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -39,8 +42,21 @@ public class JwtFilter extends OncePerRequestFilter {
                 String token = authHeader.substring(7);
 
                 // Decode JWT
+                byte[] keyBytes;
+                try {
+                    // Try Base64 decoding first (Supabase default)
+                    keyBytes = io.jsonwebtoken.io.Decoders.BASE64.decode(jwtSecret);
+                } catch (Exception e) {
+                    // Fallback to raw bytes if not valid Base64
+                    keyBytes = jwtSecret.getBytes();
+                }
+
+                if (keyBytes.length < 32) {
+                    logger.warn("JWT Secret is too short for HS256. Verify your SUPABASE_JWT_SECRET in .env");
+                }
+
                 Claims claims = Jwts.parser()
-                    .verifyWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
+                    .verifyWith(Keys.hmacShaKeyFor(keyBytes))
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
@@ -55,14 +71,13 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
             } catch (Exception e) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired JWT token");
-                return;
+                logger.error("JWT Validation failed: " + e.getMessage());
+                // Let it fall through instead of returning 401 so SecurityConfig can permit all
             }
-        } else {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing Authorization header");
-            return;
         }
 
+        // Continue the filter chain. If authentication was successful, SecurityContext will have it.
+        // If not, Spring Security's authorization rules in SecurityConfig will catch it.
         filterChain.doFilter(request, response);
     }
 }

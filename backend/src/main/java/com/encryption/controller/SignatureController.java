@@ -39,9 +39,8 @@ public class SignatureController {
             response.put("algorithm", "RSA-2048");
             response.put("message", "Key pair generated successfully. Save your private key securely!");
 
-            if (authentication != null && authentication.getName() != null) {
-                auditService.logActionAsync(authentication.getName(), "KEY_GENERATE", "RSA_KEYPAIR", 0);
-            }
+            String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
+            auditService.logActionAsync(userId, "KEY_GENERATE", "RSA_KEYPAIR", 0);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -79,9 +78,8 @@ public class SignatureController {
             response.put("message", "File signed successfully");
             response.put("timestamp", System.currentTimeMillis());
 
-            if (authentication != null && authentication.getName() != null) {
-                auditService.logActionAsync(authentication.getName(), "FILE_SIGN", file.getOriginalFilename(), fileBytes.length);
-            }
+            String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
+            auditService.logActionAsync(userId, "FILE_SIGN", file.getOriginalFilename(), fileBytes.length);
 
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
@@ -124,9 +122,8 @@ public class SignatureController {
                     : "❌ Signature is INVALID — file may have been tampered with.");
             response.put("timestamp", System.currentTimeMillis());
 
-            if (authentication != null && authentication.getName() != null) {
-                auditService.logActionAsync(authentication.getName(), "SIGNATURE_VERIFY", file.getOriginalFilename(), fileBytes.length);
-            }
+            String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
+            auditService.logActionAsync(userId, "SIGNATURE_VERIFY", file.getOriginalFilename(), fileBytes.length);
 
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {

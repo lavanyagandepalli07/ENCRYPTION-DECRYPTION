@@ -37,6 +37,9 @@ dependencies {
     // Logging
     implementation 'org.springframework.boot:spring-boot-starter-logging'
 
+    // Environment Variable Support
+    implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+
     // Development Tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -48,10 +51,4 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
 }

@@ -3,6 +3,7 @@ package com.encryption.controller;
 import com.encryption.dto.AuditLogDTO;
 import com.encryption.dto.DecryptionRequest;
 import com.encryption.dto.EncryptionResponse;
+import com.encryption.exception.EncryptionException;
 import com.encryption.service.AuditService;
 import com.encryption.service.FileService;
 import org.springframework.http.HttpHeaders;
@@ -12,8 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.io.InputStream;
 import java.util.List;
+
 import java.util.UUID;
 
 @RestController
@@ -47,32 +51,35 @@ public class FileController {
             @RequestParam("passphrase") String passphrase,
             Authentication authentication) {
         try {
-            String userId = authentication.getName();
+            String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
             String fileName = file.getOriginalFilename();
-            byte[] fileContent = file.getBytes();
-
+            
             // Validate input
             if (passphrase == null || passphrase.length() < 8) {
                 return ResponseEntity.badRequest()
                     .body("{\"error\": \"Passphrase must be at least 8 characters long\"}");
             }
 
-            // Encrypt and upload
-            String fileId = fileService.encryptAndUploadFile(fileContent, fileName, passphrase, userId);
+            // Encrypt and upload using stream
+            String fileId;
+            try (InputStream is = file.getInputStream()) {
+                fileId = fileService.encryptAndUploadFileStream(is, fileName, passphrase, userId);
+            }
 
             // Log the operation
-            auditService.logEncryption(userId, fileName, fileContent.length);
+            auditService.logEncryption(userId, fileName, (int) file.getSize());
 
             // Return response
             EncryptionResponse response = new EncryptionResponse(
                 fileId,
                 fileName,
-                fileContent.length,
+                (int) file.getSize(),
                 "File encrypted successfully",
                 System.currentTimeMillis()
             );
 
             return ResponseEntity.ok(response);
+
 
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
@@ -88,44 +95,36 @@ public class FileController {
      * POST /api/decrypt/{fileId}
      */
     @PostMapping("/decrypt/{fileId}")
-    public ResponseEntity<?> decryptFile(
+    public ResponseEntity<StreamingResponseBody> decryptFile(
             @PathVariable String fileId,
             @RequestBody DecryptionRequest request,
             Authentication authentication) {
-        try {
-            String userId = authentication.getName();
+        
+        String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
 
-            // Validate input
-            if (request.getPassphrase() == null || request.getPassphrase().length() < 8) {
-                return ResponseEntity.badRequest()
-                    .body("{\"error\": \"Passphrase must be at least 8 characters long\"}");
-            }
-
-            // Validate file ownership
-            if (!fileService.validateFileOwnership(fileId, userId)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("{\"error\": \"Access denied: You do not own this file\"}");
-            }
-
-            // Download and decrypt
-            byte[] decryptedContent = fileService.downloadAndDecryptFile(fileId, request.getPassphrase(), userId);
-
-            // Log the operation
-            auditService.logDecryption(userId, fileId, decryptedContent.length);
-
-            // Return decrypted file
-            return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"decrypted_file\"")
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(decryptedContent);
-
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                .body("{\"error\": \"" + e.getMessage() + "\"}");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("{\"error\": \"Decryption failed: " + e.getMessage() + "\"}");
+        // Validate input
+        if (request.getPassphrase() == null || request.getPassphrase().length() < 8) {
+            throw new IllegalArgumentException("Passphrase must be at least 8 characters long");
         }
+
+        // Validate file ownership
+        if (!fileService.validateFileOwnership(fileId, userId)) {
+            throw new EncryptionException("Access denied: You do not own this file");
+        }
+
+        // Return decrypted file stream
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"decrypted_" + fileId + "\"")
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(outputStream -> {
+                try {
+                    fileService.downloadAndDecryptFileStream(fileId, request.getPassphrase(), userId, outputStream);
+                    // Log the operation after successful streaming
+                    auditService.logDecryption(userId, fileId, 0);
+                } catch (Exception e) {
+                    throw new java.io.IOException("Decryption streaming failed", e);
+                }
+            });
     }
 
     /**
@@ -135,7 +134,7 @@ public class FileController {
     @GetMapping("/audit-logs")
     public ResponseEntity<?> getAuditLogs(Authentication authentication) {
         try {
-            String userId = authentication.getName();
+            String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
             List<AuditLogDTO> auditLogs = auditService.getAuditLogs(userId);
 
             return ResponseEntity.ok(auditLogs);

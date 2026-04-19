@@ -10,6 +10,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.spec.KeySpec;
@@ -68,9 +70,72 @@ public class AesEncryptionService {
         System.arraycopy(ciphertextWithTag, 0, ciphertext, 0, ciphertext.length);
         System.arraycopy(ciphertextWithTag, ciphertext.length, gcmTag, 0, tagLengthBytes);
 
-        // Return IV + Salt + Ciphertext + GCM Tag
+    // Return IV + Salt + Ciphertext + GCM Tag
         return new EncryptedOutput(iv, salt, ciphertext, gcmTag);
     }
+
+    /**
+     * Encrypts a stream of data and writes it to an output stream
+     * Format: IV (16 bytes) + Salt (16 bytes) + Ciphertext with GCM Tag
+     */
+    public void encryptStream(InputStream inputStream, OutputStream outputStream, String passphrase) throws Exception {
+        byte[] salt = generateRandomBytes(saltLength);
+        SecretKey secretKey = deriveKeyFromPassphrase(passphrase, salt);
+        byte[] iv = generateRandomBytes(ivLength);
+
+        // Write header: IV + Salt
+        outputStream.write(iv);
+        outputStream.write(salt);
+
+        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM, "BC");
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(tagLength, iv);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, gcmSpec);
+
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            byte[] output = cipher.update(buffer, 0, bytesRead);
+            if (output != null) {
+                outputStream.write(output);
+            }
+        }
+        byte[] finalOutput = cipher.doFinal();
+        if (finalOutput != null) {
+            outputStream.write(finalOutput);
+        }
+    }
+
+    /**
+     * Decrypts a stream of data and writes it to an output stream
+     */
+    public void decryptStream(InputStream inputStream, OutputStream outputStream, String passphrase) throws Exception {
+        // Read header: IV + Salt
+        byte[] iv = new byte[ivLength];
+        byte[] salt = new byte[saltLength];
+        
+        if (inputStream.read(iv) != ivLength || inputStream.read(salt) != saltLength) {
+            throw new IllegalArgumentException("Invalid encrypted file format: missing header");
+        }
+
+        SecretKey secretKey = deriveKeyFromPassphrase(passphrase, salt);
+        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM, "BC");
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(tagLength, iv);
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, gcmSpec);
+
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            byte[] output = cipher.update(buffer, 0, bytesRead);
+            if (output != null) {
+                outputStream.write(output);
+            }
+        }
+        byte[] finalOutput = cipher.doFinal();
+        if (finalOutput != null) {
+            outputStream.write(finalOutput);
+        }
+    }
+
 
     /**
      * Decrypts file content using AES-256-GCM with PBKDF2-derived key

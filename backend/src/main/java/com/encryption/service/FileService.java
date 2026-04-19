@@ -4,6 +4,9 @@ import com.encryption.crypto.AesEncryptionService;
 import com.encryption.crypto.EncryptedOutput;
 import com.encryption.util.SupabaseClient;
 import org.springframework.stereotype.Service;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.UUID;
 
 @Service
@@ -52,7 +55,7 @@ public class FileService {
             throw new IllegalArgumentException("File not found: " + fileId);
         }
 
-        // Decrypt the file
+    // Decrypt the file
         return aesEncryptionService.decrypt(
             encryptedOutput.getCiphertext(), 
             passphrase, 
@@ -61,6 +64,41 @@ public class FileService {
             encryptedOutput.getIv()
         );
     }
+
+    /**
+     * Encrypts and uploads file as a stream
+     */
+    public String encryptAndUploadFileStream(InputStream inputStream, String fileName, String passphrase, String userId) throws Exception {
+        aesEncryptionService.validatePassphrase(passphrase);
+        String fileId = "encrypted_" + UUID.randomUUID().toString() + ".bin";
+
+        // We need to write to a temporary file or a buffer because OkHttp RequestBody.create(InputStream)
+        // usually needs to know the length or uses chunked encoding which Supabase might not like
+        // For now, let's use a temporary file to simulate streaming to disk first
+        java.io.File tempFile = java.io.File.createTempFile("enc_", ".tmp");
+        try (java.io.FileOutputStream fos = new java.io.FileOutputStream(tempFile)) {
+            aesEncryptionService.encryptStream(inputStream, fos, passphrase);
+        }
+
+        // Upload the encrypted file
+        byte[] encryptedData = java.nio.file.Files.readAllBytes(tempFile.toPath());
+        supabaseClient.uploadFile(BUCKET_NAME, fileId, encryptedData);
+        
+        tempFile.delete();
+        return fileId;
+    }
+
+    /**
+     * Downloads and decrypts file as a stream
+     */
+    public void downloadAndDecryptFileStream(String fileId, String passphrase, String userId, OutputStream outputStream) throws Exception {
+        aesEncryptionService.validatePassphrase(passphrase);
+        
+        try (InputStream encryptedStream = supabaseClient.downloadFileAsStream(BUCKET_NAME, fileId)) {
+            aesEncryptionService.decryptStream(encryptedStream, outputStream, passphrase);
+        }
+    }
+
 
     /**
      * Uploads encrypted file to Supabase Storage

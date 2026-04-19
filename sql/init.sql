@@ -1,8 +1,8 @@
 -- Create audit_logs table
 CREATE TABLE IF NOT EXISTS audit_logs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL,
-    action VARCHAR(50) NOT NULL CHECK (action IN ('ENCRYPT', 'DECRYPT')),
+    user_id UUID,
+    action VARCHAR(50) NOT NULL,
     file_name VARCHAR(255) NOT NULL,
     file_size_bytes BIGINT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),

@@ -33,10 +33,8 @@ public class TextController {
             String encryptedBase64 = textService.encryptText(request.getText(), request.getPassphrase());
 
             // Log audit event
-            if (authentication != null && authentication.getName() != null) {
-                String userId = authentication.getName();
-                auditService.logActionAsync(userId, "TEXT_ENCRYPT", "TEXT_DATA", request.getText().length());
-            }
+            String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
+            auditService.logActionAsync(userId, "TEXT_ENCRYPT", "TEXT_DATA", request.getText().length());
 
             return ResponseEntity.ok(new TextEncryptionResponse(encryptedBase64, "Text encrypted successfully", System.currentTimeMillis()));
         } catch (IllegalArgumentException e) {
@@ -56,10 +54,8 @@ public class TextController {
             String decryptedText = textService.decryptText(request.getEncryptedTextBase64(), request.getPassphrase());
 
             // Log audit event
-            if (authentication != null && authentication.getName() != null) {
-                String userId = authentication.getName();
-                auditService.logActionAsync(userId, "TEXT_DECRYPT", "TEXT_DATA", request.getEncryptedTextBase64().length());
-            }
+            String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
+            auditService.logActionAsync(userId, "TEXT_DECRYPT", "TEXT_DATA", request.getEncryptedTextBase64().length());
 
             return ResponseEntity.ok(new TextDecryptionResponse(decryptedText, "Text decrypted successfully", System.currentTimeMillis()));
         } catch (IllegalArgumentException e) {
