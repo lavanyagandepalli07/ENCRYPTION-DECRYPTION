@@ -25,53 +25,53 @@ const ConfirmModal = ({
 
   const variantStyles = {
     danger: {
-      icon: 'text-red-400',
-      bg: 'bg-red-500/20',
-      border: 'border-red-500/30',
-      button: 'bg-red-600 hover:bg-red-500 shadow-[0_0_20px_-5px_rgba(239,68,68,0.5)]',
+      icon: 'text-red-600',
+      bg: 'bg-red-50',
+      border: 'border-red-100',
+      button: 'bg-red-600 hover:bg-red-700 shadow-xl shadow-red-500/20',
     },
     warning: {
-      icon: 'text-yellow-400',
-      bg: 'bg-yellow-500/20',
-      border: 'border-yellow-500/30',
-      button: 'bg-yellow-600 hover:bg-yellow-500 shadow-[0_0_20px_-5px_rgba(234,179,8,0.5)]',
+      icon: 'text-amber-600',
+      bg: 'bg-amber-50',
+      border: 'border-amber-100',
+      button: 'bg-amber-600 hover:bg-amber-700 shadow-xl shadow-amber-500/20',
     },
     info: {
-      icon: 'text-blue-400',
-      bg: 'bg-blue-500/20',
-      border: 'border-blue-500/30',
-      button: 'bg-blue-600 hover:bg-blue-500 shadow-[0_0_20px_-5px_rgba(59,130,246,0.5)]',
+      icon: 'text-blue-600',
+      bg: 'bg-blue-50',
+      border: 'border-blue-100',
+      button: 'bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-500/20',
     },
   };
 
   const styles = variantStyles[variant];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-6">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-blue-950/20 backdrop-blur-md"
         onClick={onCancel}
       />
       {/* Modal */}
-      <div className="relative bg-zinc-950 border border-white/10 rounded-2xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
-        <div className={`w-14 h-14 rounded-2xl ${styles.bg} border ${styles.border} flex items-center justify-center mx-auto mb-4`}>
-          <AlertTriangle className={`w-7 h-7 ${styles.icon}`} />
+      <div className="relative glass border-blue-100 rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(37,99,235,0.1)] max-w-sm w-full p-10 animate-scale-in">
+        <div className={`w-20 h-20 rounded-3xl ${styles.bg} border ${styles.border} flex items-center justify-center mx-auto mb-8 shadow-xl`}>
+          <AlertTriangle className={`w-10 h-10 ${styles.icon}`} />
         </div>
-        <h2 className="text-xl font-bold text-white text-center mb-2">{title}</h2>
-        <p className="text-gray-400 text-center text-sm mb-6">{message}</p>
-        <div className="flex gap-3">
-          <button
-            onClick={onCancel}
-            className="flex-1 py-3 rounded-xl border border-white/10 text-gray-400 hover:bg-zinc-900 font-semibold transition-all"
-          >
-            {cancelLabel}
-          </button>
+        <h2 className="text-2xl font-black text-blue-950 text-center mb-3 tracking-tighter">{title}</h2>
+        <p className="text-blue-900/40 text-center text-xs font-bold uppercase tracking-widest leading-relaxed mb-10">{message}</p>
+        <div className="flex flex-col gap-3">
           <button
             onClick={onConfirm}
-            className={`flex-1 py-3 rounded-xl text-white font-bold transition-all ${styles.button}`}
+            className={`w-full py-4 rounded-2xl text-white font-bold transition-all uppercase tracking-widest text-xs active:scale-[0.98] ${styles.button}`}
           >
             {confirmLabel}
+          </button>
+          <button
+            onClick={onCancel}
+            className="w-full py-4 rounded-2xl border border-blue-100 text-blue-900/40 hover:bg-blue-50 font-bold uppercase tracking-widest text-xs transition-all active:scale-[0.98]"
+          >
+            {cancelLabel}
           </button>
         </div>
       </div>

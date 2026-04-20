@@ -130,23 +130,23 @@ const FileEncryptionPage = () => {
 
   return (
     <div className="animate-slide-up max-w-3xl mx-auto">
-      <Link to="/" className="inline-flex items-center text-gray-500 hover:text-white mb-10 transition-all group font-bold text-sm tracking-widest uppercase">
-        <div className="p-2 bg-white/5 rounded-lg mr-3 group-hover:bg-white/10 transition-colors">
+      <Link to="/" className="inline-flex items-center text-blue-900/40 hover:text-blue-600 mb-10 transition-all group font-bold text-sm tracking-widest uppercase">
+        <div className="p-2 bg-blue-50 rounded-lg mr-3 group-hover:bg-blue-100 transition-colors border border-blue-100">
           <ArrowLeft className="w-4 h-4" />
         </div>
         Return to Infrastructure
       </Link>
 
-      <div className="glass-dark rounded-[2.5rem] p-8 sm:p-12 border-white/10 shadow-2xl relative overflow-hidden">
+      <div className="glass rounded-[2.5rem] p-8 sm:p-12 border-blue-100 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 blur-[80px] rounded-full -mr-32 -mt-32"></div>
         
         <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-12 relative z-10">
-          <div className="p-5 bg-blue-500/10 rounded-3xl border border-blue-500/20 shadow-xl shadow-blue-500/5">
-            <FileUp className="w-10 h-10 text-blue-400" />
+          <div className="p-5 bg-blue-100 rounded-3xl border border-blue-200 shadow-xl shadow-blue-500/5">
+            <FileUp className="w-10 h-10 text-blue-600" />
           </div>
           <div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-white mb-1">File Encryption</h1>
-            <p className="text-gray-500 font-medium tracking-tight">Advanced AES-256-GCM Secure Protocol</p>
+            <h1 className="text-3xl font-extrabold tracking-tight text-blue-950 mb-1">File Encryption</h1>
+            <p className="text-blue-900/40 font-bold tracking-tight uppercase text-xs">Advanced AES-256-GCM Secure Protocol</p>
           </div>
         </div>
 
@@ -162,12 +162,12 @@ const FileEncryptionPage = () => {
             <div className="w-20 h-20 bg-blue-500/20 rounded-3xl flex items-center justify-center border border-blue-500/30 mb-8 shadow-xl shadow-blue-500/10">
               <ShieldCheck className="w-12 h-12 text-blue-400" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">Encryption Sequence Complete</h3>
-            <p className="text-gray-400 mb-8 max-w-sm font-medium">Your data has been transformed into a secure cryptographic format.</p>
+            <h3 className="text-2xl font-bold text-blue-950 mb-4 tracking-tight">Encryption Sequence Complete</h3>
+            <p className="text-blue-900/60 mb-8 max-w-sm font-medium">Your data has been transformed into a secure cryptographic format.</p>
             
-            <div className="bg-white/5 p-6 rounded-2xl w-full text-left font-mono text-sm border border-white/5 space-y-2 mb-8">
-              <p className="flex justify-between"><span className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Vault ID:</span> <span className="text-blue-400 font-bold">{success.fileId}</span></p>
-              <p className="flex justify-between"><span className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Resource:</span> <span className="text-gray-300 truncate ml-4">{success.fileName}</span></p>
+            <div className="bg-blue-50 p-6 rounded-2xl w-full text-left font-mono text-sm border border-blue-100 space-y-2 mb-8">
+              <p className="flex justify-between"><span className="text-blue-900/40 font-bold uppercase tracking-widest text-[10px]">Vault ID:</span> <span className="text-blue-600 font-bold">{success.fileId}</span></p>
+              <p className="flex justify-between"><span className="text-blue-900/40 font-bold uppercase tracking-widest text-[10px]">Resource:</span> <span className="text-blue-900/80 truncate ml-4">{success.fileName}</span></p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -182,7 +182,7 @@ const FileEncryptionPage = () => {
               </a>
               <button
                 onClick={() => setSuccess(null)}
-                className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-4 px-8 rounded-2xl transition-all flex items-center justify-center gap-3 border border-white/10 active:scale-95"
+                className="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-900 font-bold py-4 px-8 rounded-2xl transition-all flex items-center justify-center gap-3 border border-blue-100 active:scale-95"
               >
                 Initialize New Operation
               </button>
@@ -194,7 +194,7 @@ const FileEncryptionPage = () => {
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Drag & Drop Zone */}
             <div className="space-y-3">
-              <label className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] ml-1">Secure Asset Selection</label>
+              <label className="text-xs font-bold text-blue-900/40 uppercase tracking-[0.2em] ml-1">Secure Asset Selection</label>
               <div
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
@@ -202,10 +202,10 @@ const FileEncryptionPage = () => {
                 onClick={() => fileInputRef.current?.click()}
                 className={`group relative border-2 border-dashed rounded-[2rem] p-10 cursor-pointer transition-all duration-500 text-center ${
                   isDragging
-                    ? 'border-blue-500 bg-blue-500/10 scale-[1.02] shadow-2xl shadow-blue-500/10'
+                    ? 'border-blue-500 bg-blue-50 scale-[1.02] shadow-2xl shadow-blue-500/10'
                     : file
-                    ? 'border-blue-500/40 bg-blue-500/5'
-                    : 'border-white/10 hover:border-blue-500/30 bg-white/[0.02] hover:bg-white/[0.05]'
+                    ? 'border-blue-500/40 bg-blue-50/50'
+                    : 'border-blue-100 hover:border-blue-500/30 bg-blue-50/20 hover:bg-blue-50/40'
                 }`}
               >
                 <input
@@ -217,12 +217,12 @@ const FileEncryptionPage = () => {
                 {file ? (
                   <div className="flex items-center justify-between">
                     <div className="flex items-center min-w-0">
-                      <div className="p-4 bg-blue-500/20 rounded-2xl mr-4 flex-shrink-0 border border-blue-500/20">
-                        <FileText className="w-6 h-6 text-blue-400" />
+                      <div className="p-4 bg-blue-100 rounded-2xl mr-4 flex-shrink-0 border border-blue-200">
+                        <FileText className="w-6 h-6 text-blue-600" />
                       </div>
                       <div className="text-left min-w-0">
-                        <p className="text-lg font-bold text-white truncate">{file.name}</p>
-                        <p className="text-sm text-gray-500 font-medium uppercase tracking-widest">{formatBytes(file.size)}</p>
+                        <p className="text-lg font-bold text-blue-950 truncate">{file.name}</p>
+                        <p className="text-sm text-blue-900/40 font-bold uppercase tracking-widest">{formatBytes(file.size)}</p>
                       </div>
                     </div>
                     <button
@@ -235,16 +235,16 @@ const FileEncryptionPage = () => {
                   </div>
                 ) : (
                   <div className="py-6">
-                    <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-500">
-                      <Upload className="w-8 h-8 text-blue-400/60 group-hover:text-blue-400" />
+                    <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:bg-blue-200 transition-all duration-500 border border-blue-200">
+                      <Upload className="w-8 h-8 text-blue-400 group-hover:text-blue-600" />
                     </div>
-                    <p className="text-lg text-gray-300 font-bold mb-1">
+                    <p className="text-lg text-blue-900 font-bold mb-1">
                       Drop your asset here
                     </p>
-                    <p className="text-sm text-gray-500 font-medium">
-                      or <span className="text-blue-400 hover:underline">browse local filesystem</span>
+                    <p className="text-sm text-blue-900/40 font-bold">
+                      or <span className="text-blue-600 hover:underline">browse local filesystem</span>
                     </p>
-                    <p className="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em] mt-6">Any format &bull; 5 GB Maximum</p>
+                    <p className="text-[10px] text-blue-900/20 font-bold uppercase tracking-[0.2em] mt-6">Any format &bull; 5 GB Maximum</p>
                   </div>
                 )}
               </div>
@@ -260,9 +260,9 @@ const FileEncryptionPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Passphrase */}
               <div className="space-y-3">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] ml-1">Encryption Key</label>
+                <label className="text-xs font-bold text-blue-900/40 uppercase tracking-[0.2em] ml-1">Encryption Key</label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-500 group-focus-within:text-blue-400 transition-colors">
+                  <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-blue-300 group-focus-within:text-blue-500 transition-colors">
                     <Lock className="w-5 h-5" />
                   </div>
                   <input
@@ -270,12 +270,12 @@ const FileEncryptionPage = () => {
                     value={passphrase}
                     onChange={(e) => setPassphrase(e.target.value)}
                     placeholder="Min. 8 characters"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-12 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:bg-white/10 transition-all font-medium"
+                    className="w-full bg-blue-50/50 border border-blue-100 rounded-2xl pl-12 pr-12 py-4 text-blue-950 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:bg-white transition-all font-bold placeholder-blue-900/20"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassphrase(!showPassphrase)}
-                    className="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-500 hover:text-white transition-colors"
+                    className="absolute inset-y-0 right-0 pr-5 flex items-center text-blue-300 hover:text-blue-500 transition-colors"
                   >
                     {showPassphrase ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -285,12 +285,12 @@ const FileEncryptionPage = () => {
 
               {/* Confirm Passphrase */}
               <div className="space-y-3">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] ml-1">Verify Key</label>
+                <label className="text-xs font-bold text-blue-900/40 uppercase tracking-[0.2em] ml-1">Verify Key</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors">
                     {confirmPassphrase && passphrase === confirmPassphrase
                       ? <ShieldCheck className="w-5 h-5 text-blue-500" />
-                      : <Lock className="w-5 h-5 text-gray-500 group-focus-within:text-blue-400" />
+                      : <Lock className="w-5 h-5 text-blue-300 group-focus-within:text-blue-500" />
                     }
                   </div>
                   <input
@@ -298,18 +298,18 @@ const FileEncryptionPage = () => {
                     value={confirmPassphrase}
                     onChange={(e) => setConfirmPassphrase(e.target.value)}
                     placeholder="Re-type key"
-                    className={`w-full bg-white/5 border rounded-2xl pl-12 pr-12 py-4 text-white focus:outline-none focus:ring-2 transition-all font-medium ${
+                    className={`w-full bg-blue-50/50 border rounded-2xl pl-12 pr-12 py-4 text-blue-950 focus:outline-none focus:ring-2 transition-all font-bold placeholder-blue-900/20 ${
                       confirmPassphrase && passphrase !== confirmPassphrase
                         ? 'border-red-500/30 focus:ring-red-500/20'
                         : confirmPassphrase && passphrase === confirmPassphrase
                         ? 'border-blue-500/30 focus:ring-blue-500/20'
-                        : 'border-white/10 focus:ring-blue-500/40'
+                        : 'border-blue-100 focus:ring-blue-500/40'
                     }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassphrase(!showConfirmPassphrase)}
-                    className="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-500 hover:text-white transition-colors"
+                    className="absolute inset-y-0 right-0 pr-5 flex items-center text-blue-300 hover:text-blue-500 transition-colors"
                   >
                     {showConfirmPassphrase ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -320,13 +320,13 @@ const FileEncryptionPage = () => {
             {/* Progress Bar */}
             {isLoading && progress > 0 && (
               <div className="animate-fade-in pt-4">
-                <div className="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
+                <div className="flex justify-between text-[10px] font-bold text-blue-900/40 uppercase tracking-widest mb-3">
                   <span>Cryptographic Processing...</span>
-                  <span className="text-blue-400">{progress}%</span>
+                  <span className="text-blue-600">{progress}%</span>
                 </div>
-                <div className="w-full bg-white/5 rounded-full h-3 overflow-hidden border border-white/5">
+                <div className="w-full bg-blue-100 rounded-full h-3 overflow-hidden border border-blue-200">
                   <div
-                    className="bg-gradient-to-r from-blue-600 to-blue-400 h-full transition-all duration-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                    className="bg-gradient-to-r from-blue-600 to-blue-400 h-full transition-all duration-500"
                     style={{ width: `${progress}%` }}
                   />
                 </div>

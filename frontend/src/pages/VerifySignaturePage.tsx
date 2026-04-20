@@ -73,20 +73,20 @@ const VerifySignaturePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
+    <div className="animate-slide-up p-6">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <Link to="/" className="p-2 rounded-xl bg-zinc-900 border border-white/10 hover:border-blue-500/50 transition-colors">
-            <ArrowLeft className="w-5 h-5 text-gray-400" />
+          <Link to="/" className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors border border-blue-100">
+            <ArrowLeft className="w-5 h-5 text-blue-900/40" />
           </Link>
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-blue-500/20 rounded-xl">
-              <ShieldCheck className="w-6 h-6 text-blue-400" />
+            <div className="p-5 bg-blue-100 rounded-3xl border border-blue-200 shadow-xl shadow-blue-500/5">
+              <ShieldCheck className="w-8 h-8 text-blue-600" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-100">Verify Signature</h1>
-              <p className="text-sm text-gray-400">Confirm a file's authenticity and integrity</p>
+              <h1 className="text-3xl font-extrabold tracking-tight text-blue-950 mb-1">Verify Signature</h1>
+              <p className="text-blue-900/40 font-bold tracking-tight uppercase text-xs">Confirm a file's authenticity and integrity</p>
             </div>
           </div>
         </div>
@@ -101,17 +101,19 @@ const VerifySignaturePage = () => {
 
         {/* Result Banner */}
         {result && (
-          <div className={`flex items-center gap-4 p-5 rounded-2xl border mb-6 ${result.valid
-            ? 'bg-green-500/10 border-green-500/30'
-            : 'bg-red-500/10 border-red-500/30'}`}>
-            {result.valid
-              ? <CheckCircle className="w-10 h-10 text-green-400 flex-shrink-0" />
-              : <XCircle className="w-10 h-10 text-red-400 flex-shrink-0" />}
+          <div className={`flex items-center gap-5 p-8 rounded-[2rem] border-2 mb-10 animate-scale-in shadow-xl shadow-blue-500/5 ${result.valid
+            ? 'bg-blue-50 border-blue-200'
+            : 'bg-red-50 border-red-200'}`}>
+            <div className={`p-4 rounded-2xl ${result.valid ? 'bg-blue-100 text-blue-600 border border-blue-200' : 'bg-red-100 text-red-600 border border-red-200'}`}>
+              {result.valid
+                ? <CheckCircle className="w-10 h-10 flex-shrink-0" />
+                : <XCircle className="w-10 h-10 flex-shrink-0" />}
+            </div>
             <div>
-              <p className={`font-bold text-lg ${result.valid ? 'text-green-400' : 'text-red-400'}`}>
-                {result.valid ? 'Signature Valid' : 'Signature Invalid'}
+              <p className={`font-extrabold text-2xl tracking-tight mb-1 ${result.valid ? 'text-blue-950' : 'text-red-950'}`}>
+                {result.valid ? 'Signature Verified' : 'Verification Failed'}
               </p>
-              <p className="text-sm text-gray-400">{result.message}</p>
+              <p className={`text-sm font-medium ${result.valid ? 'text-blue-900/60' : 'text-red-900/60'}`}>{result.message}</p>
             </div>
           </div>
         )}
@@ -119,21 +121,17 @@ const VerifySignaturePage = () => {
         <div className="space-y-6">
           {/* File Drop */}
           <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-3">
-              <span className="inline-flex items-center gap-1.5">
-                <Upload className="w-4 h-4 text-blue-400" /> File to Verify
-              </span>
-            </label>
+            <label className="text-xs font-bold text-blue-900/40 uppercase tracking-[0.2em] ml-1 block mb-3">File to Verify</label>
             {file ? (
-              <div className="flex items-center gap-4 p-4 bg-zinc-950 rounded-xl border border-white/10">
-                <div className="p-3 bg-blue-500/20 rounded-lg">
-                  <Upload className="w-5 h-5 text-blue-400" />
+              <div className="flex items-center gap-4 p-5 bg-blue-50/50 rounded-2xl border border-blue-100">
+                <div className="p-3 bg-blue-100 rounded-xl border border-blue-200">
+                  <Upload className="w-5 h-5 text-blue-600" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-200 truncate">{file.name}</p>
-                  <p className="text-sm text-gray-400">{formatBytes(file.size)}</p>
+                  <p className="font-bold text-blue-950 truncate">{file.name}</p>
+                  <p className="text-xs font-bold text-blue-900/40 uppercase tracking-widest">{formatBytes(file.size)}</p>
                 </div>
-                <button onClick={() => { setFile(null); if (fileInputRef.current) fileInputRef.current.value = ''; }} className="text-sm text-gray-500 hover:text-gray-300 transition-colors">Change</button>
+                <button onClick={() => { setFile(null); if (fileInputRef.current) fileInputRef.current.value = ''; }} className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors uppercase tracking-widest">Change</button>
               </div>
             ) : (
               <div
@@ -141,11 +139,14 @@ const VerifySignaturePage = () => {
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-all duration-300
-                  ${isDragging ? 'border-blue-400 bg-blue-500/10' : 'border-white/10 hover:border-blue-500/50 bg-zinc-950/50 hover:bg-zinc-950'}`}
+                className={`border-2 border-dashed rounded-[2.5rem] p-16 text-center cursor-pointer transition-all duration-500 glass
+                  ${isDragging ? 'border-blue-500 bg-blue-50 scale-[1.02] shadow-2xl' : 'border-blue-100 hover:border-blue-500/30 bg-blue-50/20 hover:bg-blue-50/40'}`}
               >
-                <Upload className={`w-8 h-8 mx-auto mb-3 ${isDragging ? 'text-blue-400' : 'text-gray-500'}`} />
-                <p className="text-gray-400 text-sm">Drop the original file here or click to browse</p>
+                <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-200">
+                  <Upload className={`w-6 h-6 ${isDragging ? 'text-blue-600' : 'text-blue-400'}`} />
+                </div>
+                <p className="text-blue-900/60 font-bold mb-1">Drop the original asset here</p>
+                <p className="text-[10px] font-bold text-blue-900/20 uppercase tracking-widest">or browse local filesystem</p>
                 <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
               </div>
             )}
@@ -153,28 +154,28 @@ const VerifySignaturePage = () => {
 
           {/* Signature Input */}
           <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-3">
-              Digital Signature (Base64) 
-              <span className="ml-2 text-xs font-normal text-gray-500">(Optional if signature is embedded)</span>
+            <label className="text-xs font-bold text-blue-900/40 uppercase tracking-[0.2em] ml-1 block mb-3">
+              Digital Signature Output
+              <span className="ml-2 text-[10px] lowercase font-bold text-blue-900/20 tracking-normal">(optional if embedded)</span>
             </label>
             <textarea
               value={signatureInput}
               onChange={(e) => setSignatureInput(e.target.value)}
-              placeholder="Paste the Base64-encoded signature here, or leave blank if verifying a signed file..."
+              placeholder="Paste the Base64-encoded signature here..."
               rows={4}
-              className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl text-sm font-mono text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
+              className="w-full px-5 py-4 bg-blue-50/50 border border-blue-100 rounded-2xl text-sm font-mono text-blue-950 placeholder-blue-900/20 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:bg-white transition-all resize-none font-bold shadow-inner"
             />
           </div>
 
           {/* Public Key Input */}
           <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-3">Public Key (Base64)</label>
+            <label className="text-xs font-bold text-blue-900/40 uppercase tracking-[0.2em] ml-1 block mb-3">Public Key Protocol</label>
             <textarea
               value={publicKeyInput}
               onChange={(e) => setPublicKeyInput(e.target.value)}
               placeholder="Paste the RSA public key (Base64 encoded, X.509 format) here..."
               rows={4}
-              className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl text-sm font-mono text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
+              className="w-full px-5 py-4 bg-blue-50/50 border border-blue-100 rounded-2xl text-sm font-mono text-blue-950 placeholder-blue-900/20 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:bg-white transition-all resize-none font-bold shadow-inner"
             />
           </div>
 
@@ -182,13 +183,13 @@ const VerifySignaturePage = () => {
           <div className="flex gap-4">
             <button
               onClick={handleVerify}
-              disabled={isLoading || !file || !signatureInput.trim() || !publicKeyInput.trim()}
-              className="flex-1 py-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-white text-lg transition-all duration-200 flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20"
+              disabled={isLoading || !file || !publicKeyInput.trim()}
+              className="flex-1 py-5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-2xl font-bold text-white text-lg transition-all duration-300 flex items-center justify-center gap-3 shadow-2xl shadow-blue-500/20 active:scale-[0.98]"
             >
-              {isLoading ? <><Loader2 className="w-5 h-5 animate-spin" /> Verifying...</> : <><ShieldCheck className="w-5 h-5" /> Verify Signature</>}
+              {isLoading ? <><Loader2 className="w-6 h-6 animate-spin" /> Analyzing...</> : <><ShieldCheck className="w-6 h-6" /> Run Verification</>}
             </button>
-            {result && (
-              <button onClick={reset} className="px-6 py-4 bg-zinc-950 hover:bg-zinc-900 border border-white/10 rounded-xl font-medium text-white transition-all">
+            {(result || file || signatureInput || publicKeyInput) && (
+              <button onClick={reset} className="px-8 py-5 bg-blue-50 hover:bg-blue-100 border border-blue-100 rounded-2xl font-bold text-blue-900 transition-all active:scale-95 text-xs uppercase tracking-widest">
                 Reset
               </button>
             )}

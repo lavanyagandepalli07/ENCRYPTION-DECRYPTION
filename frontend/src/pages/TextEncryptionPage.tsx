@@ -45,23 +45,27 @@ const TextEncryptionPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 sm:p-8 flex flex-col items-center">
+    <div className="animate-slide-up flex flex-col items-center">
       <div className="w-full max-w-3xl">
-        <Link to="/" className="flex items-center text-blue-400 hover:text-blue-300 mb-8 transition-colors">
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Back to Dashboard
+        <Link to="/" className="inline-flex items-center text-blue-900/40 hover:text-blue-600 mb-8 transition-all group font-bold text-sm tracking-widest uppercase">
+          <div className="p-2 bg-blue-50 rounded-lg mr-3 group-hover:bg-blue-100 transition-colors border border-blue-100">
+            <ArrowLeft className="w-4 h-4" />
+          </div>
+          Return to Infrastructure
         </Link>
 
-        <div className="bg-zinc-950 rounded-2xl shadow-2xl p-6 sm:p-8 border border-white/10">
-          <div className="flex items-center mb-8 pb-6 border-b border-white/10">
-            <div className="p-3 bg-blue-500/20 rounded-xl mr-4 border border-blue-500/20">
-              <Lock className="w-8 h-8 text-blue-400" />
+        <div className="glass rounded-[2.5rem] p-6 sm:p-12 border-blue-100 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 blur-[80px] rounded-full -mr-32 -mt-32"></div>
+          
+          <div className="flex items-center mb-10 pb-8 border-b border-blue-100 relative z-10">
+            <div className="p-5 bg-blue-100 rounded-3xl border border-blue-200 shadow-xl shadow-blue-500/5">
+              <Lock className="w-10 h-10 text-blue-600" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">
+              <h1 className="text-3xl font-extrabold tracking-tight text-blue-950 mb-1">
                 Text Encryption
               </h1>
-              <p className="text-gray-400 mt-1 text-sm">Secure your sensitive text messages with AES-256-GCM.</p>
+              <p className="text-blue-900/40 font-bold tracking-tight uppercase text-xs">Secure your sensitive text messages with AES-256-GCM.</p>
             </div>
           </div>
 
@@ -69,11 +73,11 @@ const TextEncryptionPage = () => {
             {/* Plain Text Input */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-medium text-gray-300">Plain Text</label>
-                <span className="text-xs text-gray-500">{text.length} characters</span>
+                <label className="text-xs font-bold text-blue-900/40 uppercase tracking-[0.2em] ml-1">Plain Text Input</label>
+                <span className="text-[10px] font-bold text-blue-900/20 uppercase tracking-widest">{text.length} characters</span>
               </div>
               <textarea
-                className="w-full bg-black border border-white/10 rounded-xl p-4 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all h-32 resize-none text-sm placeholder-gray-600"
+                className="w-full bg-blue-50/50 border border-blue-100 rounded-2xl p-4 text-blue-950 focus:ring-2 focus:ring-blue-500/40 focus:bg-white focus:outline-none transition-all h-40 resize-none font-medium placeholder-blue-900/20"
                 placeholder="Enter the text you want to encrypt..."
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -83,14 +87,14 @@ const TextEncryptionPage = () => {
 
             {/* Passphrase with visibility toggle */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Encryption Passphrase</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="w-5 h-5 text-gray-500" />
+              <label className="text-xs font-bold text-blue-900/40 uppercase tracking-[0.2em] ml-1 block mb-2">Encryption Key</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-500">
+                  <Lock className="w-5 h-5 text-blue-300 group-focus-within:text-blue-500" />
                 </div>
                 <input
                   type={showPassphrase ? 'text' : 'password'}
-                  className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-12 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm placeholder-gray-600"
+                  className="w-full bg-blue-50/50 border border-blue-100 rounded-2xl pl-12 pr-12 py-4 text-blue-950 focus:ring-2 focus:ring-blue-500/40 focus:bg-white focus:outline-none transition-all font-bold placeholder-blue-900/20"
                   placeholder="Must be at least 8 characters"
                   value={passphrase}
                   onChange={(e) => setPassphrase(e.target.value)}
@@ -99,7 +103,7 @@ const TextEncryptionPage = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassphrase(!showPassphrase)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-gray-300 transition-colors"
+                  className="absolute inset-y-0 right-0 pr-5 flex items-center text-blue-300 hover:text-blue-500 transition-colors"
                 >
                   {showPassphrase ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -114,23 +118,23 @@ const TextEncryptionPage = () => {
               </div>
             )}
 
-            <div className="flex gap-3">
+            <div className="flex gap-4">
               <button
                 type="submit"
                 disabled={loading || !text.trim() || passphrase.length < 8}
-                className="flex-1 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold shadow-lg transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold shadow-xl shadow-blue-600/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-lg"
               >
                 {loading ? (
-                  <><Loader2 className="w-5 h-5 animate-spin" /> Encrypting...</>
+                  <><Loader2 className="w-6 h-6 animate-spin" /> Processing...</>
                 ) : (
-                  <><Lock className="w-5 h-5" /> Encrypt Text</>
+                  <><Lock className="w-5 h-5" /> Initiate Encryption</>
                 )}
               </button>
               {(text || encryptedText) && (
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="px-4 py-4 bg-zinc-900 hover:bg-zinc-800 text-gray-300 rounded-xl font-semibold transition-all text-sm border border-white/10"
+                  className="px-8 py-5 bg-blue-50 hover:bg-blue-100 text-blue-900 rounded-2xl font-bold transition-all border border-blue-100 active:scale-95"
                 >
                   Reset
                 </button>
@@ -140,27 +144,28 @@ const TextEncryptionPage = () => {
 
           {/* Encrypted Result */}
           {encryptedText && (
-            <div className="mt-8 pt-8 border-t border-gray-700">
-              <div className="flex justify-between items-center mb-3">
+            <div className="mt-10 pt-10 border-t border-blue-100">
+              <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-blue-400" />
-                  <label className="text-sm font-semibold text-blue-400">Encrypted Result (Base64)</label>
+                  <CheckCircle className="w-5 h-5 text-blue-600" />
+                  <label className="text-xs font-bold text-blue-600 uppercase tracking-widest">Encrypted Result (Base64)</label>
                 </div>
                 <button
                   onClick={copyToClipboard}
-                  className="flex items-center text-sm text-gray-400 hover:text-white transition-colors bg-black px-3 py-1.5 rounded-lg border border-white/10 hover:border-white/20"
+                  className="flex items-center text-xs font-bold text-blue-900 uppercase tracking-widest bg-blue-50 px-4 py-2 rounded-xl border border-blue-100 hover:bg-blue-100 transition-all active:scale-95"
                 >
                   <Copy className="w-4 h-4 mr-2" />
-                  {copied ? 'Copied!' : 'Copy'}
+                  {copied ? 'Copied!' : 'Copy to Clipboard'}
                 </button>
               </div>
               <textarea
-                className="w-full bg-black border border-blue-500/30 rounded-xl p-4 text-blue-400 font-mono text-xs break-all h-32 focus:outline-none resize-none"
+                className="w-full bg-blue-50/50 border border-blue-200 rounded-2xl p-6 text-blue-600 font-mono text-sm break-all h-40 focus:outline-none resize-none shadow-inner"
                 value={encryptedText}
                 readOnly
               />
-              <p className="text-xs text-gray-500 mt-2">
-                ⚠️ Save this ciphertext and your passphrase — you'll need both to decrypt.
+              <p className="text-[10px] text-blue-900/40 mt-4 font-bold uppercase tracking-widest flex items-center gap-2">
+                <AlertCircle className="w-3 h-3" />
+                Store this ciphertext and your passphrase securely.
               </p>
             </div>
           )}

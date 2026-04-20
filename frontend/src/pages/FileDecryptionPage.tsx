@@ -87,21 +87,25 @@ const FileDecryptionPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 sm:p-8 flex flex-col items-center">
+    <div className="animate-slide-up flex flex-col items-center">
       <div className="max-w-2xl w-full">
-        <Link to="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors">
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Back to Dashboard
+        <Link to="/" className="inline-flex items-center text-blue-900/40 hover:text-blue-600 mb-8 transition-all group font-bold text-sm tracking-widest uppercase">
+          <div className="p-2 bg-blue-50 rounded-lg mr-3 group-hover:bg-blue-100 transition-colors border border-blue-100">
+            <ArrowLeft className="w-4 h-4" />
+          </div>
+          Return to Infrastructure
         </Link>
 
-        <div className="bg-zinc-950 rounded-2xl p-6 sm:p-8 border border-white/10 shadow-xl">
-          <div className="flex items-center mb-6">
-            <div className="p-3 bg-blue-500/10 rounded-xl mr-4 border border-blue-500/20">
-              <FileDown className="w-8 h-8 text-blue-500" />
+        <div className="glass rounded-[2.5rem] p-6 sm:p-12 border-blue-100 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 blur-[80px] rounded-full -mr-32 -mt-32"></div>
+          
+          <div className="flex items-center mb-10 pb-8 border-b border-blue-100 relative z-10">
+            <div className="p-5 bg-blue-100 rounded-3xl border border-blue-200 shadow-xl shadow-blue-500/5">
+              <FileDown className="w-10 h-10 text-blue-600" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">Decrypt File</h1>
-              <p className="text-gray-400 text-sm">Recover your files securely from the vault</p>
+              <h1 className="text-3xl font-extrabold tracking-tight text-blue-950 mb-1">Decrypt File</h1>
+              <p className="text-blue-900/40 font-bold tracking-tight uppercase text-xs">Recover your files securely from the vault</p>
             </div>
           </div>
 
@@ -115,34 +119,34 @@ const FileDecryptionPage = () => {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* File ID */}
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">File ID</label>
+              <label className="text-xs font-bold text-blue-900/40 uppercase tracking-[0.2em] ml-1 block mb-2">File ID</label>
               <input
                 type="text"
                 value={fileId}
                 onChange={(e) => setFileId(e.target.value)}
                 placeholder="Paste the UUID of the encrypted file"
-                className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-mono placeholder-gray-600 text-sm"
+                className="w-full bg-blue-50/50 border border-blue-100 rounded-2xl px-4 py-4 text-blue-950 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:bg-white transition-all font-mono placeholder-blue-900/20 text-sm font-bold"
               />
             </div>
 
             {/* Passphrase with toggle */}
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">Decryption Passphrase</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Unlock className="w-5 h-5 text-gray-500" />
+              <label className="text-xs font-bold text-blue-900/40 uppercase tracking-[0.2em] ml-1 block mb-2">Decryption Key</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-500">
+                  <Unlock className="w-5 h-5 text-blue-300 group-focus-within:text-blue-500" />
                 </div>
                 <input
                   type={showPassphrase ? 'text' : 'password'}
                   value={passphrase}
                   onChange={(e) => setPassphrase(e.target.value)}
                   placeholder="Enter the passphrase used for encryption"
-                  className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-12 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder-gray-600 text-sm"
+                  className="w-full bg-blue-50/50 border border-blue-100 rounded-2xl pl-12 pr-12 py-4 text-blue-950 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:bg-white transition-all font-bold placeholder-blue-900/20 text-sm"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassphrase(!showPassphrase)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-gray-300 transition-colors"
+                  className="absolute inset-y-0 right-0 pr-5 flex items-center text-blue-300 hover:text-blue-500 transition-colors"
                 >
                   {showPassphrase ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -151,14 +155,14 @@ const FileDecryptionPage = () => {
 
             {/* Progress bar */}
             {isLoading && (
-              <div>
-                <div className="flex justify-between text-xs text-gray-400 mb-1">
+              <div className="animate-fade-in pt-4">
+                <div className="flex justify-between text-[10px] font-bold text-blue-900/40 uppercase tracking-widest mb-3">
                   <span>Downloading & decrypting...</span>
-                  {progress > 0 && <span>{progress}%</span>}
+                  {progress > 0 && <span className="text-blue-600">{progress}%</span>}
                 </div>
-                <div className="w-full bg-zinc-900 rounded-full h-2">
+                <div className="w-full bg-blue-100 rounded-full h-3 overflow-hidden border border-blue-200">
                   <div
-                    className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                    className="bg-gradient-to-r from-blue-600 to-blue-400 h-full transition-all duration-300"
                     style={{ width: progress > 0 ? `${progress}%` : '30%', animation: progress === 0 ? 'pulse 1.5s ease-in-out infinite' : 'none' }}
                   />
                 </div>
@@ -168,17 +172,17 @@ const FileDecryptionPage = () => {
             <button
               type="submit"
               disabled={isLoading || !fileId || !passphrase}
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_-5px_rgba(59,130,246,0.4)] hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.6)]"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 rounded-2xl transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl shadow-blue-600/20 hover:shadow-blue-600/40 group active:scale-[0.98] text-lg"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Decrypting & Downloading...
+                  <Loader2 className="w-6 h-6 mr-3 animate-spin" />
+                  Processing Asset...
                 </>
               ) : (
                 <>
-                  <Download className="w-5 h-5 mr-2" />
-                  Decrypt & Download File
+                  <Download className="w-5 h-5 mr-3" />
+                  Decrypt & Download Resource
                 </>
               )}
             </button>
