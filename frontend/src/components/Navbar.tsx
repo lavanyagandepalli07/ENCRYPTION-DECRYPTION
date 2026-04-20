@@ -30,15 +30,8 @@ const Navbar = () => {
 
           {/* Right side actions */}
           <div className="flex items-center gap-4">
-            {role === 'admin' && (
-              <Link
-                to="/admin/dashboard"
-                className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 rounded-full transition-all border border-blue-500/20"
-              >
-                <LayoutDashboard className="w-4 h-4" />
-                Admin Panel
-              </Link>
-            )}
+            {/* Admin link removed from main navbar to keep interface clean, still available in profile dropdown for admins */}
+
 
             <div className="relative">
               <button

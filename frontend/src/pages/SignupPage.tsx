@@ -159,33 +159,8 @@ const SignupPage = () => {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">Account Role</label>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setRole('user')}
-                  className={`py-3 px-4 rounded-xl border font-bold transition-all ${
-                    role === 'user' 
-                      ? 'bg-purple-600 border-purple-500 text-white shadow-lg' 
-                      : 'bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-600'
-                  }`}
-                >
-                  User
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRole('admin')}
-                  className={`py-3 px-4 rounded-xl border font-bold transition-all ${
-                    role === 'admin' 
-                      ? 'bg-blue-600 border-blue-500 text-white shadow-lg' 
-                      : 'bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-600'
-                  }`}
-                >
-                  Admin
-                </button>
-              </div>
-            </div>
+            {/* Role is defaulted to 'user' and the selector is removed to prevent unauthorized admin creation */}
+
 
             <button
               type="submit"
