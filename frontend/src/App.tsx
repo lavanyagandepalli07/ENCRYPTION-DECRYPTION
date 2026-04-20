@@ -14,6 +14,7 @@ import SignupPage from './pages/SignupPage';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import UserManagement from './pages/UserManagement';
+import SupportPage from './pages/SupportPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import SessionWarning from './components/SessionWarning';
@@ -58,6 +59,7 @@ function App() {
           <Route path="/verify-signature" element={<ProtectedRoute><MainLayout><VerifySignaturePage /></MainLayout></ProtectedRoute>} />
           <Route path="/check-integrity" element={<ProtectedRoute><MainLayout><CheckIntegrityPage /></MainLayout></ProtectedRoute>} />
           <Route path="/audit-log" element={<ProtectedRoute><MainLayout><AuditLogPage /></MainLayout></ProtectedRoute>} />
+          <Route path="/support" element={<ProtectedRoute><MainLayout><SupportPage /></MainLayout></ProtectedRoute>} />
         </Routes>
       </Router>
     </AuthProvider>

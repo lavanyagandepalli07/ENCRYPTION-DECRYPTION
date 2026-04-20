@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ClipboardList, ArrowLeft, Loader2, AlertCircle, Calendar, FileType, ShieldAlert, UserPlus } from 'lucide-react';
+import { ClipboardList, ArrowLeft, Loader2, AlertCircle, Calendar, FileType, ShieldAlert, UserPlus, RefreshCcw, ArrowRight } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -45,8 +45,7 @@ const AuditLogPage = () => {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
+      minute: '2-digit'
     });
   };
 
@@ -59,106 +58,130 @@ const AuditLogPage = () => {
   };
 
   const getOperationBadge = (operation: string) => {
-    if (operation.includes('ENCRYPT')) {
-      return <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded-md text-xs font-bold border border-blue-500/30">ENCRYPT</span>;
-    }
-    if (operation.includes('DECRYPT')) {
-      return <span className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded-md text-xs font-bold border border-blue-500/30">DECRYPT</span>;
-    }
-    return <span className="px-2 py-1 bg-white/10 text-gray-400 rounded-md text-xs font-bold border border-white/10">{operation}</span>;
+    const isEncrypt = operation.includes('ENCRYPT');
+    const isDecrypt = operation.includes('DECRYPT');
+    
+    return (
+      <span className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border ${
+        isEncrypt ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 
+        isDecrypt ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' : 
+        'bg-white/5 text-gray-400 border-white/10'
+      }`}>
+        {operation}
+      </span>
+    );
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-8 flex flex-col items-center">
-      <div className="max-w-5xl w-full">
-        <Link to="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors">
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Back to Dashboard
-        </Link>
+    <div className="animate-slide-up max-w-5xl mx-auto">
+      <Link to="/" className="inline-flex items-center text-gray-500 hover:text-white mb-10 transition-all group font-bold text-sm tracking-widest uppercase">
+        <div className="p-2 bg-white/5 rounded-lg mr-3 group-hover:bg-white/10 transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+        </div>
+        Return to Infrastructure
+      </Link>
 
-        <div className="bg-zinc-950 rounded-2xl p-8 border border-white/10 shadow-xl">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center">
-              <div className="p-3 bg-blue-500/10 rounded-xl mr-4 border border-blue-500/20">
-                <ClipboardList className="w-8 h-8 text-blue-500" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold">Audit Logs</h1>
-                <p className="text-gray-400">Review your security operations and activities</p>
-              </div>
+      <div className="glass-dark rounded-[2.5rem] p-8 sm:p-12 border-white/10 shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 blur-[80px] rounded-full -mr-32 -mt-32"></div>
+        
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 relative z-10">
+          <div className="flex items-center gap-6">
+            <div className="p-5 bg-blue-500/10 rounded-3xl border border-blue-500/20 shadow-xl shadow-blue-500/5">
+              <ClipboardList className="w-10 h-10 text-blue-400" />
             </div>
-            <button 
-              onClick={fetchLogs}
-              className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 rounded-lg text-sm font-semibold transition-colors flex items-center border border-white/10"
-            >
-              Refresh
-            </button>
+            <div>
+              <h1 className="text-3xl font-extrabold tracking-tight text-white mb-1">Security Audit</h1>
+              <p className="text-gray-500 font-medium tracking-tight">Immutable Cryptographic Operation Records</p>
+            </div>
           </div>
+          <button 
+            onClick={fetchLogs}
+            disabled={isLoading || isGuest}
+            className="px-6 py-3 bg-white/5 hover:bg-white/10 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border border-white/5 uppercase tracking-widest active:scale-95 disabled:opacity-30"
+          >
+            <RefreshCcw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh Feed
+          </button>
+        </div>
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-xl flex items-start text-red-400">
-              <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
-              <p>{error}</p>
-            </div>
-          )}
+        {error && (
+          <div className="mb-10 p-5 bg-red-500/10 border border-red-500/20 rounded-[2rem] flex items-start text-red-400 animate-slide-up">
+            <AlertCircle className="w-5 h-5 mr-4 flex-shrink-0 mt-0.5" />
+            <p className="text-sm font-semibold">{error}</p>
+          </div>
+        )}
 
-          {isLoading ? (
-            <div className="py-12 flex flex-col items-center justify-center text-gray-400">
-              <Loader2 className="w-10 h-10 animate-spin mb-4 text-blue-500" />
-              <p>Loading audit logs...</p>
+        {isLoading ? (
+          <div className="py-24 flex flex-col items-center justify-center text-gray-500">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-500 blur-2xl opacity-20 animate-pulse"></div>
+              <Loader2 className="w-12 h-12 animate-spin mb-6 text-blue-400 relative z-10" />
             </div>
-          ) : isGuest ? (
-            <div className="py-16 flex flex-col items-center justify-center bg-black/50 rounded-xl border border-dashed border-white/10">
-              <UserPlus className="w-12 h-12 text-blue-500 mb-4" />
-              <h3 className="text-xl font-bold text-gray-200 mb-2">Activity Tracking Unavailable</h3>
-              <p className="text-gray-400 max-w-md text-center mb-6">
-                Guest mode does not track activity. Sign up for a free account to maintain a secure audit trail of all your encryption and decryption operations.
-              </p>
-              <Link 
-                to="/signup" 
-                className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-blue-900/20"
-              >
-                Create Free Account
-              </Link>
+            <p className="font-bold uppercase tracking-widest text-[10px]">Retrieving secure records...</p>
+          </div>
+        ) : isGuest ? (
+          <div className="py-20 flex flex-col items-center justify-center glass rounded-[3rem] border-white/5 text-center px-6">
+            <div className="w-20 h-20 bg-blue-600/10 rounded-[2rem] flex items-center justify-center mb-8 border border-blue-600/20 shadow-2xl shadow-blue-600/10">
+              <UserPlus className="w-10 h-10 text-blue-400" />
             </div>
-          ) : logs.length === 0 ? (
-            <div className="py-16 flex flex-col items-center justify-center bg-black/50 rounded-xl border border-dashed border-white/10">
-              <ShieldAlert className="w-12 h-12 text-gray-500 mb-3" />
-              <h3 className="text-xl font-bold text-gray-400 mb-1">No Activity Found</h3>
-              <p className="text-gray-500">You haven't performed any encryption or decryption operations yet.</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto rounded-xl border border-white/10">
+            <h3 className="text-2xl font-bold text-white mb-4">Activity Tracking Offline</h3>
+            <p className="text-gray-400 max-w-sm mb-10 font-medium leading-relaxed">
+              Guest sessions are ephemeral and do not maintain audit trails. Initialize a secure profile to enable immutable activity logging.
+            </p>
+            <Link 
+              to="/signup" 
+              className="px-10 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold transition-all shadow-xl shadow-blue-600/20 flex items-center gap-2 group active:scale-95"
+            >
+              Initialize Profile <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        ) : logs.length === 0 ? (
+          <div className="py-20 flex flex-col items-center justify-center glass rounded-[3rem] border-white/5 text-center">
+            <ShieldAlert className="w-16 h-16 text-gray-700 mb-6 opacity-50" />
+            <h3 className="text-xl font-bold text-gray-400 mb-2 tracking-tight">Zero Activity Detected</h3>
+            <p className="text-gray-500 font-medium">Your cryptographic audit trail is currently empty.</p>
+          </div>
+        ) : (
+          <div className="overflow-hidden rounded-[2rem] border border-white/5 bg-white/[0.02]">
+            <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-black border-b border-white/10 text-gray-400 text-sm">
-                    <th className="p-4 font-semibold">Operation</th>
-                    <th className="p-4 font-semibold">File Details</th>
-                    <th className="p-4 font-semibold">Size</th>
-                    <th className="p-4 font-semibold text-right">Timestamp</th>
+                  <tr className="bg-white/5 text-gray-500 text-[10px] uppercase tracking-[0.2em] font-bold">
+                    <th className="p-6">Operation</th>
+                    <th className="p-6">Secure Resource</th>
+                    <th className="p-6">Payload</th>
+                    <th className="p-6 text-right">Timestamp</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
                   {logs.map((log) => (
-                    <tr key={log.id} className="hover:bg-zinc-900 transition-colors bg-zinc-950">
-                      <td className="p-4 align-middle">
+                    <tr key={log.id} className="hover:bg-white/[0.03] transition-all group">
+                      <td className="p-6 align-middle">
                         {getOperationBadge(log.action)}
                       </td>
-                      <td className="p-4 align-middle">
+                      <td className="p-6 align-middle">
                         <div className="flex items-center">
-                          <FileType className="w-4 h-4 text-gray-500 mr-2" />
-                          <span className="font-medium text-gray-200 truncate max-w-[200px]" title={log.file_name}>
+                          <div className="p-2 bg-white/5 rounded-lg mr-3 group-hover:bg-blue-500/10 transition-colors">
+                            <FileType className="w-4 h-4 text-gray-500 group-hover:text-blue-400 transition-colors" />
+                          </div>
+                          <span className="font-bold text-gray-300 truncate max-w-[240px] group-hover:text-white transition-colors" title={log.file_name}>
                             {log.file_name}
                           </span>
                         </div>
                       </td>
-                      <td className="p-4 align-middle text-gray-400 text-sm">
-                        {formatSize(log.file_size_bytes)}
+                      <td className="p-6 align-middle">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest bg-white/5 px-2 py-1 rounded">
+                          {formatSize(log.file_size_bytes)}
+                        </span>
                       </td>
-                      <td className="p-4 align-middle text-right text-gray-400 text-sm">
-                        <div className="flex items-center justify-end">
-                          <Calendar className="w-4 h-4 mr-2 text-gray-500" />
-                          {formatDate(log.created_at)}
+                      <td className="p-6 align-middle text-right">
+                        <div className="flex flex-col items-end">
+                          <span className="text-sm font-bold text-gray-400 group-hover:text-gray-200 transition-colors">
+                            {formatDate(log.created_at).split(',')[1]}
+                          </span>
+                          <span className="text-[10px] font-medium text-gray-600 uppercase tracking-widest">
+                            {formatDate(log.created_at).split(',')[0]}
+                          </span>
                         </div>
                       </td>
                     </tr>
@@ -166,8 +189,8 @@ const AuditLogPage = () => {
                 </tbody>
               </table>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

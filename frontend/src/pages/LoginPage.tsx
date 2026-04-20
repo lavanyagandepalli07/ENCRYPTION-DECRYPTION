@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../services/supabaseClient';
-import { Lock, Mail, ShieldAlert, Loader2, AlertCircle, UserCircle } from 'lucide-react';
+import { Lock, Mail, ShieldAlert, Loader2, AlertCircle, UserCircle, ArrowRight } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const LoginPage = () => {
@@ -31,18 +32,16 @@ const LoginPage = () => {
       });
 
       if (error) {
-        console.error('Login error:', error);
         if (error.message.includes('Email not confirmed')) {
-          throw new Error('Email not confirmed. Please check your inbox (and spam folder) for the confirmation link.');
+          throw new Error('Email confirmation required. Please check your inbox.');
         }
         if (error.status === 400) {
-          throw new Error('Invalid login credentials. If you just signed up, please ensure you confirmed your email. If you forgot your password, please contact an admin.');
+          throw new Error('Invalid credentials. Please verify your email and password.');
         }
         throw error;
       }
 
       if (data.user) {
-        // Fetch role with retries to account for trigger delay if it's a new signup
         let role = 'user';
         const maxRetries = 5;
 
@@ -57,120 +56,135 @@ const LoginPage = () => {
             role = profile.role || 'user';
             break;
           }
-          
-          if (i < maxRetries - 1) {
-            await new Promise(resolve => setTimeout(resolve, 800));
-          }
+          if (i < maxRetries - 1) await new Promise(resolve => setTimeout(resolve, 800));
         }
 
-        if (role === 'admin') {
-          navigate('/admin/dashboard');
-        } else {
-          navigate('/');
-        }
+        navigate(role === 'admin' ? '/admin/dashboard' : '/');
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to log in. Please check your credentials.');
+      setError(err.message || 'Authentication failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-zinc-950 rounded-2xl p-8 border border-white/10 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-bl-full -mr-16 -mt-16"></div>
-        
-        <div className="text-center mb-8 relative z-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-black border border-white/10 mb-4 shadow-[0_0_20px_-5px_rgba(59,130,246,0.3)]">
-            <ShieldAlert className="w-8 h-8 text-blue-500" />
-          </div>
-          <h1 className="text-3xl font-extrabold text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-400">Sign in to access your SecureVault</p>
-        </div>
+    <div className="min-h-screen bg-black text-white flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 blur-[120px] rounded-full animate-pulse-slow"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-900/10 blur-[120px] rounded-full animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute inset-0 bg-mesh opacity-40"></div>
+        <div className="absolute inset-0 noise"></div>
+      </div>
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-xl flex items-start text-red-400">
-            <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
-            <p className="text-sm">{error}</p>
-          </div>
-        )}
-
-        <form onSubmit={handleLogin} className="space-y-6 relative z-10">
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Mail className="w-5 h-5 text-gray-500" />
-              </div>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder-gray-600"
-                placeholder="you@example.com"
-              />
+      <div className="max-w-md w-full relative z-10 animate-scale-in">
+        <div className="text-center mb-10">
+          <Link to="/" className="inline-flex items-center gap-3 group mb-8">
+            <div className="relative p-3 bg-blue-600/10 rounded-2xl border border-blue-500/20 group-hover:bg-blue-600/20 transition-all duration-300">
+              <ShieldAlert className="w-8 h-8 text-blue-400 group-hover:text-blue-300" />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Password</label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Lock className="w-5 h-5 text-gray-500" />
-              </div>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder-gray-600"
-                placeholder="••••••••"
-              />
+            <div className="text-left">
+              <h2 className="text-2xl font-bold tracking-tight text-white leading-none">SecureVault</h2>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-semibold mt-1">Cryptography Suite</p>
             </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={isLoading || !email || !password}
-            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center disabled:opacity-50 shadow-[0_0_20px_-5px_rgba(59,130,246,0.4)] hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.6)] mt-2"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Signing in...
-              </>
-            ) : (
-              'Sign In'
-            )}
-          </button>
-
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10"></div>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-zinc-950 px-2 text-gray-500">Or</span>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleGuestMode}
-            className="w-full bg-black hover:bg-zinc-900 text-gray-300 font-semibold py-3.5 rounded-xl border border-white/10 transition-all flex items-center justify-center hover:text-white"
-          >
-            <UserCircle className="w-5 h-5 mr-2" />
-            Continue as Guest
-          </button>
-        </form>
-
-        <div className="mt-8 text-center text-gray-400 text-sm relative z-10">
-          Don't have an account?{' '}
-          <Link to="/signup" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
-            Sign up securely
           </Link>
+          <h1 className="text-4xl font-extrabold tracking-tight text-white mb-3">Access Portal</h1>
+          <p className="text-gray-400 font-medium">Verify your identity to enter the vault.</p>
         </div>
+
+        <div className="glass-dark rounded-[2.5rem] p-10 border-white/10 shadow-2xl backdrop-blur-3xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-[5rem] -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+          
+          {error && (
+            <div className="mb-8 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-start text-red-400 animate-slide-up">
+              <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
+              <p className="text-sm font-medium">{error}</p>
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Email Address</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-500">
+                  <Mail className="w-5 h-5 text-gray-500 group-focus-within:text-blue-400" />
+                </div>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:bg-white/10 transition-all placeholder-gray-600 font-medium"
+                  placeholder="name@company.com"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Secret Key</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-500">
+                  <Lock className="w-5 h-5 text-gray-500 group-focus-within:text-blue-400" />
+                </div>
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:bg-white/10 transition-all placeholder-gray-600 font-medium"
+                  placeholder="••••••••••••"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading || !email || !password}
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-2xl transition-all flex items-center justify-center disabled:opacity-50 shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 group active:scale-[0.98]"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Decrypting...
+                </>
+              ) : (
+                <span className="flex items-center gap-2">
+                  Initiate Access <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              )}
+            </button>
+
+            <div className="relative py-4">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/5"></div>
+              </div>
+              <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-widest">
+                <span className="bg-black/20 backdrop-blur-md px-3 text-gray-500">Protocol Alternative</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleGuestMode}
+              className="w-full bg-white/5 hover:bg-white/10 text-gray-300 font-bold py-4 rounded-2xl border border-white/10 transition-all flex items-center justify-center hover:text-white active:scale-[0.98]"
+            >
+              <UserCircle className="w-5 h-5 mr-2 opacity-60" />
+              Continue as Guest
+            </button>
+          </form>
+
+          <div className="mt-10 text-center text-sm font-medium">
+            <span className="text-gray-500">New operator?</span>{' '}
+            <Link to="/signup" className="text-blue-400 hover:text-blue-300 transition-colors ml-1">
+              Create secure profile
+            </Link>
+          </div>
+        </div>
+
+        <p className="mt-8 text-center text-[10px] text-gray-600 uppercase tracking-[0.3em] font-bold">
+          End-to-End Encrypted Session
+        </p>
       </div>
     </div>
   );

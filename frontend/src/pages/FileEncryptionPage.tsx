@@ -1,8 +1,9 @@
+
 import React, { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FileUp, Lock, ArrowLeft, Loader2, ShieldCheck,
-  AlertCircle, Eye, EyeOff, X, FileText, Upload, Download
+  AlertCircle, Eye, EyeOff, X, FileText, Upload, Download, ArrowRight
 } from 'lucide-react';
 import api from '../services/api';
 import PassphraseStrength from '../components/PassphraseStrength';
@@ -105,7 +106,6 @@ const FileEncryptionPage = () => {
 
       setSuccess(response.data);
       
-      // Automatically trigger download
       const downloadUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/download-encrypted/${response.data.fileId}`;
       const link = document.createElement('a');
       link.href = downloadUrl;
@@ -129,144 +129,153 @@ const FileEncryptionPage = () => {
   const isLargeFile = file && file.size > WARN_FILE_SIZE_BYTES;
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 sm:p-8 flex flex-col items-center">
-      <div className="max-w-2xl w-full">
-        <Link to="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors">
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Back to Dashboard
-        </Link>
+    <div className="animate-slide-up max-w-3xl mx-auto">
+      <Link to="/" className="inline-flex items-center text-gray-500 hover:text-white mb-10 transition-all group font-bold text-sm tracking-widest uppercase">
+        <div className="p-2 bg-white/5 rounded-lg mr-3 group-hover:bg-white/10 transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+        </div>
+        Return to Infrastructure
+      </Link>
 
-        <div className="bg-zinc-950 rounded-2xl p-6 sm:p-8 border border-white/10 shadow-xl">
-          <div className="flex items-center mb-6">
-            <div className="p-3 bg-blue-500/10 rounded-xl mr-4 border border-blue-500/20">
-              <FileUp className="w-8 h-8 text-blue-500" />
+      <div className="glass-dark rounded-[2.5rem] p-8 sm:p-12 border-white/10 shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 blur-[80px] rounded-full -mr-32 -mt-32"></div>
+        
+        <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-12 relative z-10">
+          <div className="p-5 bg-blue-500/10 rounded-3xl border border-blue-500/20 shadow-xl shadow-blue-500/5">
+            <FileUp className="w-10 h-10 text-blue-400" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-extrabold tracking-tight text-white mb-1">File Encryption</h1>
+            <p className="text-gray-500 font-medium tracking-tight">Advanced AES-256-GCM Secure Protocol</p>
+          </div>
+        </div>
+
+        {error && (
+          <div className="mb-10 p-5 bg-red-500/10 border border-red-500/20 rounded-[2rem] flex items-start text-red-400 animate-slide-up">
+            <AlertCircle className="w-5 h-5 mr-4 flex-shrink-0 mt-0.5" />
+            <p className="text-sm font-semibold">{error}</p>
+          </div>
+        )}
+
+        {success && (
+          <div className="mb-10 p-8 glass rounded-[2.5rem] border-blue-500/30 flex flex-col items-center text-center animate-scale-in">
+            <div className="w-20 h-20 bg-blue-500/20 rounded-3xl flex items-center justify-center border border-blue-500/30 mb-8 shadow-xl shadow-blue-500/10">
+              <ShieldCheck className="w-12 h-12 text-blue-400" />
             </div>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">Encrypt File</h1>
-              <p className="text-gray-400 text-sm">Secure your files with AES-256-GCM encryption</p>
+            <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">Encryption Sequence Complete</h3>
+            <p className="text-gray-400 mb-8 max-w-sm font-medium">Your data has been transformed into a secure cryptographic format.</p>
+            
+            <div className="bg-white/5 p-6 rounded-2xl w-full text-left font-mono text-sm border border-white/5 space-y-2 mb-8">
+              <p className="flex justify-between"><span className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Vault ID:</span> <span className="text-blue-400 font-bold">{success.fileId}</span></p>
+              <p className="flex justify-between"><span className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Resource:</span> <span className="text-gray-300 truncate ml-4">{success.fileName}</span></p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 w-full">
+              <a
+                href={`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/download-encrypted/${success.fileId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-8 rounded-2xl transition-all flex items-center justify-center gap-3 shadow-xl shadow-blue-500/20 group active:scale-95"
+              >
+                <Download className="w-5 h-5" />
+                Download Asset
+              </a>
+              <button
+                onClick={() => setSuccess(null)}
+                className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-4 px-8 rounded-2xl transition-all flex items-center justify-center gap-3 border border-white/10 active:scale-95"
+              >
+                Initialize New Operation
+              </button>
             </div>
           </div>
+        )}
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-xl flex items-start text-red-400">
-              <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
-              <p className="text-sm">{error}</p>
-            </div>
-          )}
-
-          {success && (
-            <div className="mb-6 p-6 bg-blue-500/10 border border-blue-500/50 rounded-xl flex flex-col items-center text-center">
-              <ShieldCheck className="w-12 h-12 text-blue-400 mb-3" />
-              <h3 className="text-xl font-bold text-blue-400 mb-2">Encryption Successful!</h3>
-              <p className="text-gray-300 mb-4 text-sm">Your file has been securely encrypted and stored.</p>
-              <div className="bg-black p-4 rounded-lg w-full text-left font-mono text-sm break-all border border-white/10 space-y-1">
-                <p><span className="text-gray-500">File ID:</span> <span className="text-blue-400">{success.fileId}</span></p>
-                <p><span className="text-gray-500">File Name:</span> {success.fileName}</p>
-              </div>
-              <p className="text-xs text-gray-500 mt-3">⚠️ Save the File ID — you'll need it to decrypt.</p>
-              
-              <div className="flex flex-col sm:flex-row gap-3 mt-6 w-full">
-                <a
-                  href={`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/download-encrypted/${success.fileId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
-                >
-                  <Download className="w-5 h-5" />
-                  Download Encrypted File
-                </a>
-                <button
-                  onClick={() => setSuccess(null)}
-                  className="flex-1 bg-zinc-900 hover:bg-zinc-800 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 border border-white/10"
-                >
-                  Encrypt Another File
-                </button>
-              </div>
-            </div>
-          )}
-
-          {!success && (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Drag & Drop Zone */}
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Select File</label>
-                <div
-                  onDrop={handleDrop}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onClick={() => fileInputRef.current?.click()}
-                  className={`relative border-2 border-dashed rounded-xl p-6 cursor-pointer transition-all duration-200 text-center ${
-                    isDragging
-                      ? 'border-blue-400 bg-blue-500/10 scale-[1.01]'
-                      : file
-                      ? 'border-blue-500/50 bg-blue-500/5'
-                      : 'border-white/10 hover:border-blue-500/30 bg-black/50 hover:bg-black'
-                  }`}
-                >
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
-                  {file ? (
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center min-w-0">
-                        <div className="p-2 bg-blue-500/20 rounded-lg mr-3 flex-shrink-0">
-                          <FileText className="w-5 h-5 text-blue-400" />
-                        </div>
-                        <div className="text-left min-w-0">
-                          <p className="text-sm font-medium text-white truncate">{file.name}</p>
-                          <p className="text-xs text-gray-500">{formatBytes(file.size)}</p>
-                        </div>
+        {!success && (
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Drag & Drop Zone */}
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] ml-1">Secure Asset Selection</label>
+              <div
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onClick={() => fileInputRef.current?.click()}
+                className={`group relative border-2 border-dashed rounded-[2rem] p-10 cursor-pointer transition-all duration-500 text-center ${
+                  isDragging
+                    ? 'border-blue-500 bg-blue-500/10 scale-[1.02] shadow-2xl shadow-blue-500/10'
+                    : file
+                    ? 'border-blue-500/40 bg-blue-500/5'
+                    : 'border-white/10 hover:border-blue-500/30 bg-white/[0.02] hover:bg-white/[0.05]'
+                }`}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                {file ? (
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center min-w-0">
+                      <div className="p-4 bg-blue-500/20 rounded-2xl mr-4 flex-shrink-0 border border-blue-500/20">
+                        <FileText className="w-6 h-6 text-blue-400" />
                       </div>
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); setFile(null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
-                        className="ml-3 text-gray-500 hover:text-red-400 transition-colors flex-shrink-0"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
+                      <div className="text-left min-w-0">
+                        <p className="text-lg font-bold text-white truncate">{file.name}</p>
+                        <p className="text-sm text-gray-500 font-medium uppercase tracking-widest">{formatBytes(file.size)}</p>
+                      </div>
                     </div>
-                  ) : (
-                    <div className="py-4">
-                      <Upload className="w-10 h-10 text-gray-500 mx-auto mb-3" />
-                      <p className="text-sm text-gray-400">
-                        <span className="text-blue-400 font-semibold">Click to upload</span> or drag & drop
-                      </p>
-                      <p className="text-xs text-gray-600 mt-1">Any file type • Max 5 GB</p>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setFile(null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
+                      className="p-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl transition-all ml-4"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="py-6">
+                    <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-500">
+                      <Upload className="w-8 h-8 text-blue-400/60 group-hover:text-blue-400" />
                     </div>
-                  )}
-                </div>
-
-                {isLargeFile && (
-                  <div className="mt-2 flex items-center gap-2 text-yellow-400 text-xs">
-                    <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span>Large file detected ({formatBytes(file!.size)}). Encryption may take a while.</span>
+                    <p className="text-lg text-gray-300 font-bold mb-1">
+                      Drop your asset here
+                    </p>
+                    <p className="text-sm text-gray-500 font-medium">
+                      or <span className="text-blue-400 hover:underline">browse local filesystem</span>
+                    </p>
+                    <p className="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em] mt-6">Any format &bull; 5 GB Maximum</p>
                   </div>
                 )}
               </div>
 
+              {isLargeFile && (
+                <div className="mt-4 flex items-center gap-3 text-amber-400 text-xs font-bold bg-amber-400/5 p-3 rounded-xl border border-amber-400/20 animate-pulse">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>LARGE ASSET DETECTED ({formatBytes(file!.size)}). PROCESSING TIME MAY VARY.</span>
+                </div>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Passphrase */}
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">
-                  Encryption Passphrase
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Lock className="w-5 h-5 text-gray-500" />
+              <div className="space-y-3">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] ml-1">Encryption Key</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-500 group-focus-within:text-blue-400 transition-colors">
+                    <Lock className="w-5 h-5" />
                   </div>
                   <input
                     type={showPassphrase ? 'text' : 'password'}
                     value={passphrase}
                     onChange={(e) => setPassphrase(e.target.value)}
-                    placeholder="Enter a strong passphrase (min 8 characters)"
-                    className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-12 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder-gray-600 text-sm"
+                    placeholder="Min. 8 characters"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-12 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:bg-white/10 transition-all font-medium"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassphrase(!showPassphrase)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-gray-300 transition-colors"
+                    className="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-500 hover:text-white transition-colors"
                   >
                     {showPassphrase ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -275,86 +284,80 @@ const FileEncryptionPage = () => {
               </div>
 
               {/* Confirm Passphrase */}
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">
-                  Confirm Passphrase
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <div className="space-y-3">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] ml-1">Verify Key</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors">
                     {confirmPassphrase && passphrase === confirmPassphrase
                       ? <ShieldCheck className="w-5 h-5 text-blue-500" />
-                      : <Lock className="w-5 h-5 text-gray-500" />
+                      : <Lock className="w-5 h-5 text-gray-500 group-focus-within:text-blue-400" />
                     }
                   </div>
                   <input
                     type={showConfirmPassphrase ? 'text' : 'password'}
                     value={confirmPassphrase}
                     onChange={(e) => setConfirmPassphrase(e.target.value)}
-                    placeholder="Re-enter your passphrase"
-                    className={`w-full bg-black border rounded-xl pl-12 pr-12 py-3 text-white focus:outline-none focus:ring-2 transition-all placeholder-gray-600 text-sm ${
+                    placeholder="Re-type key"
+                    className={`w-full bg-white/5 border rounded-2xl pl-12 pr-12 py-4 text-white focus:outline-none focus:ring-2 transition-all font-medium ${
                       confirmPassphrase && passphrase !== confirmPassphrase
-                        ? 'border-red-500/50 focus:ring-red-500/30'
+                        ? 'border-red-500/30 focus:ring-red-500/20'
                         : confirmPassphrase && passphrase === confirmPassphrase
-                        ? 'border-blue-500/50 focus:ring-blue-500/30'
-                        : 'border-white/10 focus:ring-blue-500/50'
+                        ? 'border-blue-500/30 focus:ring-blue-500/20'
+                        : 'border-white/10 focus:ring-blue-500/40'
                     }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassphrase(!showConfirmPassphrase)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-gray-300 transition-colors"
+                    className="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-500 hover:text-white transition-colors"
                   >
                     {showConfirmPassphrase ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
-                {confirmPassphrase && passphrase !== confirmPassphrase && (
-                  <p className="mt-1 text-xs text-red-400">Passphrases do not match</p>
-                )}
               </div>
+            </div>
 
-              {/* Progress Bar */}
-              {isLoading && progress > 0 && (
-                <div>
-                  <div className="flex justify-between text-xs text-gray-400 mb-1">
-                    <span>Uploading & encrypting...</span>
-                    <span>{progress}%</span>
-                  </div>
-                  <div className="w-full bg-zinc-900 rounded-full h-2">
-                    <div
-                      className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${progress}%` }}
-                    />
-                  </div>
+            {/* Progress Bar */}
+            {isLoading && progress > 0 && (
+              <div className="animate-fade-in pt-4">
+                <div className="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
+                  <span>Cryptographic Processing...</span>
+                  <span className="text-blue-400">{progress}%</span>
                 </div>
-              )}
+                <div className="w-full bg-white/5 rounded-full h-3 overflow-hidden border border-white/5">
+                  <div
+                    className="bg-gradient-to-r from-blue-600 to-blue-400 h-full transition-all duration-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+            )}
 
-              <button
-                type="submit"
-                disabled={isLoading || !file || !passphrase || passphrase !== confirmPassphrase}
-                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_-5px_rgba(59,130,246,0.4)] hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.6)]"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Encrypting...
-                  </>
-                ) : (
-                  <>
-                    <Lock className="w-5 h-5 mr-2" />
-                    Encrypt File
-                  </>
-                )}
-              </button>
-            </form>
-          )}
-        </div>
+            <button
+              type="submit"
+              disabled={isLoading || !file || !passphrase || passphrase !== confirmPassphrase}
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 rounded-[2rem] transition-all flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed shadow-2xl shadow-blue-600/20 hover:shadow-blue-600/40 group active:scale-[0.98]"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-6 h-6 mr-3 animate-spin" />
+                  Processing Protocol...
+                </>
+              ) : (
+                <span className="flex items-center gap-3 text-lg">
+                  Initiate Encryption <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              )}
+            </button>
+          </form>
+        )}
       </div>
 
       <ConfirmModal
         isOpen={showConfirm}
-        title="Confirm Encryption"
-        message={`Are you sure you want to encrypt "${file?.name}"? Make sure to save your passphrase safely — it cannot be recovered.`}
-        confirmLabel="Yes, Encrypt"
+        title="Protocol Confirmation"
+        message={`Authorize the encryption of "${file?.name}"? Ensure your key is stored securely; encrypted data without a key is irrecoverable.`}
+        confirmLabel="Authorize Sequence"
         onConfirm={handleEncrypt}
         onCancel={() => setShowConfirm(false)}
         variant="warning"
