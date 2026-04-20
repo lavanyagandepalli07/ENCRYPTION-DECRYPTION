@@ -73,16 +73,16 @@ const VerifySignaturePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-6">
+    <div className="min-h-screen bg-black text-white p-6">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <Link to="/" className="p-2 rounded-xl bg-gray-800 border border-gray-700 hover:border-yellow-500/50 transition-colors">
+          <Link to="/" className="p-2 rounded-xl bg-zinc-900 border border-white/10 hover:border-blue-500/50 transition-colors">
             <ArrowLeft className="w-5 h-5 text-gray-400" />
           </Link>
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-yellow-500/20 rounded-xl">
-              <ShieldCheck className="w-6 h-6 text-yellow-400" />
+            <div className="p-3 bg-blue-500/20 rounded-xl">
+              <ShieldCheck className="w-6 h-6 text-blue-400" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-100">Verify Signature</h1>
@@ -121,13 +121,13 @@ const VerifySignaturePage = () => {
           <div>
             <label className="block text-sm font-semibold text-gray-300 mb-3">
               <span className="inline-flex items-center gap-1.5">
-                <Upload className="w-4 h-4 text-yellow-400" /> File to Verify
+                <Upload className="w-4 h-4 text-blue-400" /> File to Verify
               </span>
             </label>
             {file ? (
-              <div className="flex items-center gap-4 p-4 bg-gray-800 rounded-xl border border-gray-700">
-                <div className="p-3 bg-yellow-500/20 rounded-lg">
-                  <Upload className="w-5 h-5 text-yellow-400" />
+              <div className="flex items-center gap-4 p-4 bg-zinc-950 rounded-xl border border-white/10">
+                <div className="p-3 bg-blue-500/20 rounded-lg">
+                  <Upload className="w-5 h-5 text-blue-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-gray-200 truncate">{file.name}</p>
@@ -142,9 +142,9 @@ const VerifySignaturePage = () => {
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
                 className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-all duration-300
-                  ${isDragging ? 'border-yellow-400 bg-yellow-500/10' : 'border-gray-700 hover:border-yellow-500/50 bg-gray-800/50 hover:bg-gray-800'}`}
+                  ${isDragging ? 'border-blue-400 bg-blue-500/10' : 'border-white/10 hover:border-blue-500/50 bg-zinc-950/50 hover:bg-zinc-950'}`}
               >
-                <Upload className={`w-8 h-8 mx-auto mb-3 ${isDragging ? 'text-yellow-400' : 'text-gray-500'}`} />
+                <Upload className={`w-8 h-8 mx-auto mb-3 ${isDragging ? 'text-blue-400' : 'text-gray-500'}`} />
                 <p className="text-gray-400 text-sm">Drop the original file here or click to browse</p>
                 <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
               </div>
@@ -162,7 +162,7 @@ const VerifySignaturePage = () => {
               onChange={(e) => setSignatureInput(e.target.value)}
               placeholder="Paste the Base64-encoded signature here, or leave blank if verifying a signed file..."
               rows={4}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-sm font-mono text-gray-300 placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors resize-none"
+              className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl text-sm font-mono text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
             />
           </div>
 
@@ -174,7 +174,7 @@ const VerifySignaturePage = () => {
               onChange={(e) => setPublicKeyInput(e.target.value)}
               placeholder="Paste the RSA public key (Base64 encoded, X.509 format) here..."
               rows={4}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-sm font-mono text-gray-300 placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors resize-none"
+              className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl text-sm font-mono text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
             />
           </div>
 
@@ -183,12 +183,12 @@ const VerifySignaturePage = () => {
             <button
               onClick={handleVerify}
               disabled={isLoading || !file || !signatureInput.trim() || !publicKeyInput.trim()}
-              className="flex-1 py-4 bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-500 hover:to-amber-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-white text-lg transition-all duration-200 flex items-center justify-center gap-3 shadow-lg shadow-yellow-500/20"
+              className="flex-1 py-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-white text-lg transition-all duration-200 flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20"
             >
               {isLoading ? <><Loader2 className="w-5 h-5 animate-spin" /> Verifying...</> : <><ShieldCheck className="w-5 h-5" /> Verify Signature</>}
             </button>
             {result && (
-              <button onClick={reset} className="px-6 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl font-medium text-gray-300 transition-all">
+              <button onClick={reset} className="px-6 py-4 bg-zinc-950 hover:bg-zinc-900 border border-white/10 rounded-xl font-medium text-white transition-all">
                 Reset
               </button>
             )}

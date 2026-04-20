@@ -87,17 +87,17 @@ const FileDecryptionPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-4 sm:p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-black text-white p-4 sm:p-8 flex flex-col items-center">
       <div className="max-w-2xl w-full">
         <Link to="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors">
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back to Dashboard
         </Link>
 
-        <div className="bg-gray-800 rounded-2xl p-6 sm:p-8 border border-gray-700 shadow-xl">
+        <div className="bg-zinc-950 rounded-2xl p-6 sm:p-8 border border-white/10 shadow-xl">
           <div className="flex items-center mb-6">
-            <div className="p-3 bg-teal-500/20 rounded-xl mr-4 border border-teal-500/20">
-              <FileDown className="w-8 h-8 text-teal-400" />
+            <div className="p-3 bg-blue-500/10 rounded-xl mr-4 border border-blue-500/20">
+              <FileDown className="w-8 h-8 text-blue-500" />
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold">Decrypt File</h1>
@@ -121,7 +121,7 @@ const FileDecryptionPage = () => {
                 value={fileId}
                 onChange={(e) => setFileId(e.target.value)}
                 placeholder="Paste the UUID of the encrypted file"
-                className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500/50 transition-all font-mono placeholder-gray-600 text-sm"
+                className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-mono placeholder-gray-600 text-sm"
               />
             </div>
 
@@ -137,7 +137,7 @@ const FileDecryptionPage = () => {
                   value={passphrase}
                   onChange={(e) => setPassphrase(e.target.value)}
                   placeholder="Enter the passphrase used for encryption"
-                  className="w-full bg-gray-900 border border-gray-700 rounded-xl pl-12 pr-12 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500/50 transition-all placeholder-gray-600 text-sm"
+                  className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-12 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder-gray-600 text-sm"
                 />
                 <button
                   type="button"
@@ -156,9 +156,9 @@ const FileDecryptionPage = () => {
                   <span>Downloading & decrypting...</span>
                   {progress > 0 && <span>{progress}%</span>}
                 </div>
-                <div className="w-full bg-gray-700 rounded-full h-2">
+                <div className="w-full bg-zinc-900 rounded-full h-2">
                   <div
-                    className="bg-teal-500 h-2 rounded-full transition-all duration-300"
+                    className="bg-blue-500 h-2 rounded-full transition-all duration-300"
                     style={{ width: progress > 0 ? `${progress}%` : '30%', animation: progress === 0 ? 'pulse 1.5s ease-in-out infinite' : 'none' }}
                   />
                 </div>
@@ -168,7 +168,7 @@ const FileDecryptionPage = () => {
             <button
               type="submit"
               disabled={isLoading || !fileId || !passphrase}
-              className="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_-5px_rgba(20,184,166,0.4)] hover:shadow-[0_0_25px_-5px_rgba(20,184,166,0.6)]"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_-5px_rgba(59,130,246,0.4)] hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.6)]"
             >
               {isLoading ? (
                 <>

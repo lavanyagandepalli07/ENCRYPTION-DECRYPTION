@@ -15,7 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full bg-gray-900/50 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50">
+    <nav className="w-full bg-black/50 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo and Brand */}
@@ -36,9 +36,9 @@ const Navbar = () => {
             <div className="relative">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex items-center gap-2 p-1.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                className="flex items-center gap-2 p-1.5 bg-zinc-900 hover:bg-zinc-800 border border-white/10 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-gray-300">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center text-white">
                   <UserIcon className="w-5 h-5" />
                 </div>
                 <span className="hidden sm:inline text-sm font-medium text-gray-300 px-1">
@@ -53,8 +53,8 @@ const Navbar = () => {
                     className="fixed inset-0 z-10" 
                     onClick={() => setIsMenuOpen(false)}
                   ></div>
-                  <div className="absolute right-0 mt-2 w-48 bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl py-2 z-20 animate-scale-in">
-                    <div className="px-4 py-2 border-b border-gray-800 mb-2">
+                  <div className="absolute right-0 mt-2 w-48 bg-black border border-white/10 rounded-2xl shadow-2xl py-2 z-20 animate-scale-in">
+                    <div className="px-4 py-2 border-b border-white/10 mb-2">
                       <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Account</p>
                       <p className="text-sm font-medium text-gray-300 truncate">
                         {isGuest ? 'Guest Session' : user?.email}
@@ -65,7 +65,7 @@ const Navbar = () => {
                       <>
                         <Link
                           to="/login"
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 transition-colors"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-zinc-900 transition-colors"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           <UserIcon className="w-4 h-4 text-gray-500" />
@@ -73,7 +73,7 @@ const Navbar = () => {
                         </Link>
                         <Link
                           to="/signup"
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-blue-400 hover:bg-gray-800 transition-colors font-medium"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-blue-400 hover:bg-zinc-900 transition-colors font-medium"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           <ShieldAlert className="w-4 h-4 text-blue-500" />
@@ -83,18 +83,18 @@ const Navbar = () => {
                     ) : role === 'admin' && (
                       <Link
                         to="/admin/dashboard"
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 transition-colors"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-zinc-900 transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         <Settings className="w-4 h-4 text-gray-500" />
                         Admin Dashboard
                       </Link>
                     )}
-
+ 
                     <button
                       onClick={handleLogout}
                       className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
-                        isGuest ? 'text-gray-400 hover:bg-gray-800' : 'text-red-400 hover:bg-red-500/10'
+                        isGuest ? 'text-gray-400 hover:bg-zinc-900' : 'text-red-400 hover:bg-red-500/10'
                       }`}
                     >
                       <LogOut className="w-4 h-4" />

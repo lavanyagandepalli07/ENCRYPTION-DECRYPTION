@@ -80,13 +80,13 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-bl-full -mr-16 -mt-16"></div>
+    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-zinc-950 rounded-2xl p-8 border border-white/10 shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-bl-full -mr-16 -mt-16"></div>
         
         <div className="text-center mb-8 relative z-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-900 border border-gray-700 mb-4 shadow-[0_0_20px_-5px_rgba(168,85,247,0.3)]">
-            <ShieldAlert className="w-8 h-8 text-purple-500" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-black border border-white/10 mb-4 shadow-[0_0_20px_-5px_rgba(59,130,246,0.3)]">
+            <ShieldAlert className="w-8 h-8 text-blue-500" />
           </div>
           <h1 className="text-3xl font-extrabold text-white mb-2">Create Account</h1>
           <p className="text-gray-400">Join SecureVault today</p>
@@ -119,7 +119,7 @@ const SignupPage = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-gray-900 border border-gray-700 rounded-xl pl-12 pr-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all placeholder-gray-600"
+                  className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder-gray-600"
                   placeholder="you@example.com"
                 />
               </div>
@@ -136,7 +136,7 @@ const SignupPage = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-gray-900 border border-gray-700 rounded-xl pl-12 pr-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all placeholder-gray-600"
+                  className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder-gray-600"
                   placeholder="••••••••"
                 />
               </div>
@@ -153,7 +153,7 @@ const SignupPage = () => {
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full bg-gray-900 border border-gray-700 rounded-xl pl-12 pr-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all placeholder-gray-600"
+                  className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder-gray-600"
                   placeholder="••••••••"
                 />
               </div>
@@ -165,7 +165,7 @@ const SignupPage = () => {
             <button
               type="submit"
               disabled={isLoading || !email || !password || !confirmPassword}
-              className="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center disabled:opacity-50 shadow-[0_0_20px_-5px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_-5px_rgba(168,85,247,0.6)] mt-4"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center disabled:opacity-50 shadow-[0_0_20px_-5px_rgba(59,130,246,0.4)] hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.6)] mt-4"
             >
               {isLoading ? (
                 <>
@@ -179,17 +179,17 @@ const SignupPage = () => {
 
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-700"></div>
+                <div className="w-full border-t border-white/10"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-gray-800 px-2 text-gray-500">Or</span>
+                <span className="bg-zinc-950 px-2 text-gray-500">Or</span>
               </div>
             </div>
 
             <button
               type="button"
               onClick={handleGuestMode}
-              className="w-full bg-gray-900 hover:bg-gray-700 text-gray-300 font-semibold py-3.5 rounded-xl border border-gray-700 transition-all flex items-center justify-center hover:text-white"
+              className="w-full bg-black hover:bg-zinc-900 text-gray-300 font-semibold py-3.5 rounded-xl border border-white/10 transition-all flex items-center justify-center hover:text-white"
             >
               <UserCircle className="w-5 h-5 mr-2" />
               Continue as Guest
@@ -199,7 +199,7 @@ const SignupPage = () => {
 
         <div className="mt-8 text-center text-gray-400 text-sm relative z-10">
           Already have an account?{' '}
-          <Link to="/login" className="text-purple-400 hover:text-purple-300 font-semibold transition-colors">
+          <Link to="/login" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
             Log in here
           </Link>
         </div>

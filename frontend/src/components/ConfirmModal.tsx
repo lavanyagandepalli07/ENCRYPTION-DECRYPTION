@@ -54,16 +54,16 @@ const ConfirmModal = ({
         onClick={onCancel}
       />
       {/* Modal */}
-      <div className="relative bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+      <div className="relative bg-zinc-950 border border-white/10 rounded-2xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
         <div className={`w-14 h-14 rounded-2xl ${styles.bg} border ${styles.border} flex items-center justify-center mx-auto mb-4`}>
           <AlertTriangle className={`w-7 h-7 ${styles.icon}`} />
         </div>
-        <h2 className="text-xl font-bold text-gray-100 text-center mb-2">{title}</h2>
+        <h2 className="text-xl font-bold text-white text-center mb-2">{title}</h2>
         <p className="text-gray-400 text-center text-sm mb-6">{message}</p>
         <div className="flex gap-3">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-xl border border-gray-600 text-gray-300 hover:bg-gray-700 font-semibold transition-all"
+            className="flex-1 py-3 rounded-xl border border-white/10 text-gray-400 hover:bg-zinc-900 font-semibold transition-all"
           >
             {cancelLabel}
           </button>

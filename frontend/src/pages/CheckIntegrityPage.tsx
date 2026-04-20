@@ -14,8 +14,8 @@ interface HashResult {
 const ALGO_COLORS: Record<string, string> = {
   'MD5': 'text-red-400',
   'SHA-1': 'text-yellow-400',
-  'SHA-256': 'text-green-400',
-  'SHA-512': 'text-cyan-400',
+  'SHA-256': 'text-blue-400',
+  'SHA-512': 'text-blue-300',
 };
 
 const ALGO_WARNINGS: Record<string, string | null> = {
@@ -89,16 +89,16 @@ const CheckIntegrityPage = () => {
   const matchStatus = getMatchStatus();
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-6">
+    <div className="min-h-screen bg-black text-white p-6">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <Link to="/" className="p-2 rounded-xl bg-gray-800 border border-gray-700 hover:border-cyan-500/50 transition-colors">
+          <Link to="/" className="p-2 rounded-xl bg-zinc-900 border border-white/10 hover:border-blue-500/50 transition-colors">
             <ArrowLeft className="w-5 h-5 text-gray-400" />
           </Link>
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-cyan-500/20 rounded-xl">
-              <Activity className="w-6 h-6 text-cyan-400" />
+            <div className="p-3 bg-blue-500/20 rounded-xl">
+              <Activity className="w-6 h-6 text-blue-400" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-100">Check File Integrity</h1>
@@ -119,15 +119,15 @@ const CheckIntegrityPage = () => {
           {/* File Drop */}
           <div>
             <label className="block text-sm font-semibold text-gray-300 mb-3">
-              <span className="inline-flex items-center gap-1.5"><Upload className="w-4 h-4 text-cyan-400" /> Select File</span>
+              <span className="inline-flex items-center gap-1.5"><Upload className="w-4 h-4 text-blue-400" /> Select File</span>
             </label>
             {file ? (
-              <div className="flex items-center gap-4 p-4 bg-gray-800 rounded-xl border border-gray-700">
-                <div className="p-3 bg-cyan-500/20 rounded-lg">
-                  <Upload className="w-5 h-5 text-cyan-400" />
+              <div className="flex items-center gap-4 p-4 bg-zinc-950 rounded-xl border border-white/10">
+                <div className="p-3 bg-blue-500/20 rounded-lg">
+                  <Upload className="w-5 h-5 text-blue-400" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-200 truncate">{file.name}</p>
+                  <p className="font-medium text-white truncate">{file.name}</p>
                   <p className="text-sm text-gray-400">{formatBytes(file.size)}</p>
                 </div>
                 <button
@@ -144,9 +144,9 @@ const CheckIntegrityPage = () => {
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
                 className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all duration-300
-                  ${isDragging ? 'border-cyan-400 bg-cyan-500/10' : 'border-gray-700 hover:border-cyan-500/50 bg-gray-800/50 hover:bg-gray-800'}`}
+                  ${isDragging ? 'border-blue-400 bg-blue-500/10' : 'border-white/10 hover:border-blue-500/50 bg-zinc-950/50 hover:bg-zinc-950'}`}
               >
-                <Activity className={`w-10 h-10 mx-auto mb-3 ${isDragging ? 'text-cyan-400' : 'text-gray-500'}`} />
+                <Activity className={`w-10 h-10 mx-auto mb-3 ${isDragging ? 'text-blue-400' : 'text-gray-500'}`} />
                 <p className="text-gray-400 text-sm">Drop your file here or click to browse</p>
                 <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
               </div>
@@ -157,17 +157,17 @@ const CheckIntegrityPage = () => {
           <button
             onClick={handleCompute}
             disabled={isLoading || !file}
-            className="w-full py-4 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-white text-lg transition-all duration-200 flex items-center justify-center gap-3 shadow-lg shadow-cyan-500/20"
+            className="w-full py-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-white text-lg transition-all duration-200 flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20"
           >
             {isLoading ? <><Loader2 className="w-5 h-5 animate-spin" /> Computing...</> : <><Activity className="w-5 h-5" /> Compute Hashes</>}
           </button>
 
           {/* Results */}
           {result && (
-            <div className="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden">
-              <div className="p-4 border-b border-gray-700 flex items-center justify-between">
+            <div className="bg-zinc-950 rounded-2xl border border-white/10 overflow-hidden">
+              <div className="p-4 border-b border-white/10 flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-gray-200">{result.fileName}</p>
+                  <p className="font-semibold text-white">{result.fileName}</p>
                   <p className="text-xs text-gray-400">{formatBytes(result.fileSize)}</p>
                 </div>
                 <button onClick={handleCompute} className="p-2 text-gray-500 hover:text-gray-300 transition-colors" title="Recompute">
@@ -175,7 +175,7 @@ const CheckIntegrityPage = () => {
                 </button>
               </div>
 
-              <div className="divide-y divide-gray-700/50">
+              <div className="divide-y divide-white/10">
                 {Object.entries(result.hashes).map(([algo, hash]) => (
                   <div key={algo} className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -198,13 +198,13 @@ const CheckIntegrityPage = () => {
 
           {/* Hash Comparison */}
           {result && (
-            <div className="bg-gray-800 rounded-2xl border border-gray-700 p-6">
-              <h3 className="font-semibold text-gray-200 mb-4">Compare Against Known Hash</h3>
+            <div className="bg-zinc-950 rounded-2xl border border-white/10 p-6">
+              <h3 className="font-semibold text-white mb-4">Compare Against Known Hash</h3>
               <div className="flex gap-3 mb-4">
                 <select
                   value={compareAlgo}
                   onChange={(e) => setCompareAlgo(e.target.value)}
-                  className="px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm text-gray-300 focus:outline-none focus:border-cyan-500/50"
+                  className="px-3 py-2 bg-black border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500/50"
                 >
                   {Object.keys(result.hashes).map(a => <option key={a} value={a}>{a}</option>)}
                 </select>
@@ -213,7 +213,7 @@ const CheckIntegrityPage = () => {
                   value={compareHash}
                   onChange={(e) => setCompareHash(e.target.value)}
                   placeholder="Paste hash to compare..."
-                  className="flex-1 px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm font-mono text-gray-300 placeholder-gray-600 focus:outline-none focus:border-cyan-500/50"
+                  className="flex-1 px-4 py-2 bg-black border border-white/10 rounded-lg text-sm font-mono text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50"
                 />
               </div>
               {matchStatus && (

@@ -129,17 +129,17 @@ const FileEncryptionPage = () => {
   const isLargeFile = file && file.size > WARN_FILE_SIZE_BYTES;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-4 sm:p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-black text-white p-4 sm:p-8 flex flex-col items-center">
       <div className="max-w-2xl w-full">
         <Link to="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors">
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back to Dashboard
         </Link>
 
-        <div className="bg-gray-800 rounded-2xl p-6 sm:p-8 border border-gray-700 shadow-xl">
+        <div className="bg-zinc-950 rounded-2xl p-6 sm:p-8 border border-white/10 shadow-xl">
           <div className="flex items-center mb-6">
-            <div className="p-3 bg-emerald-500/20 rounded-xl mr-4 border border-emerald-500/20">
-              <FileUp className="w-8 h-8 text-emerald-400" />
+            <div className="p-3 bg-blue-500/10 rounded-xl mr-4 border border-blue-500/20">
+              <FileUp className="w-8 h-8 text-blue-500" />
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold">Encrypt File</h1>
@@ -155,12 +155,12 @@ const FileEncryptionPage = () => {
           )}
 
           {success && (
-            <div className="mb-6 p-6 bg-emerald-500/10 border border-emerald-500/50 rounded-xl flex flex-col items-center text-center">
-              <ShieldCheck className="w-12 h-12 text-emerald-400 mb-3" />
-              <h3 className="text-xl font-bold text-emerald-400 mb-2">Encryption Successful!</h3>
+            <div className="mb-6 p-6 bg-blue-500/10 border border-blue-500/50 rounded-xl flex flex-col items-center text-center">
+              <ShieldCheck className="w-12 h-12 text-blue-400 mb-3" />
+              <h3 className="text-xl font-bold text-blue-400 mb-2">Encryption Successful!</h3>
               <p className="text-gray-300 mb-4 text-sm">Your file has been securely encrypted and stored.</p>
-              <div className="bg-gray-900 p-4 rounded-lg w-full text-left font-mono text-sm break-all border border-gray-700 space-y-1">
-                <p><span className="text-gray-500">File ID:</span> <span className="text-emerald-400">{success.fileId}</span></p>
+              <div className="bg-black p-4 rounded-lg w-full text-left font-mono text-sm break-all border border-white/10 space-y-1">
+                <p><span className="text-gray-500">File ID:</span> <span className="text-blue-400">{success.fileId}</span></p>
                 <p><span className="text-gray-500">File Name:</span> {success.fileName}</p>
               </div>
               <p className="text-xs text-gray-500 mt-3">⚠️ Save the File ID — you'll need it to decrypt.</p>
@@ -170,14 +170,14 @@ const FileEncryptionPage = () => {
                   href={`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/download-encrypted/${success.fileId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20"
+                  className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
                 >
                   <Download className="w-5 h-5" />
                   Download Encrypted File
                 </a>
                 <button
                   onClick={() => setSuccess(null)}
-                  className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2"
+                  className="flex-1 bg-zinc-900 hover:bg-zinc-800 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 border border-white/10"
                 >
                   Encrypt Another File
                 </button>
@@ -197,10 +197,10 @@ const FileEncryptionPage = () => {
                   onClick={() => fileInputRef.current?.click()}
                   className={`relative border-2 border-dashed rounded-xl p-6 cursor-pointer transition-all duration-200 text-center ${
                     isDragging
-                      ? 'border-emerald-400 bg-emerald-500/10 scale-[1.01]'
+                      ? 'border-blue-400 bg-blue-500/10 scale-[1.01]'
                       : file
-                      ? 'border-emerald-500/50 bg-emerald-500/5'
-                      : 'border-gray-600 hover:border-gray-500 bg-gray-900/50 hover:bg-gray-900'
+                      ? 'border-blue-500/50 bg-blue-500/5'
+                      : 'border-white/10 hover:border-blue-500/30 bg-black/50 hover:bg-black'
                   }`}
                 >
                   <input
@@ -212,11 +212,11 @@ const FileEncryptionPage = () => {
                   {file ? (
                     <div className="flex items-center justify-between">
                       <div className="flex items-center min-w-0">
-                        <div className="p-2 bg-emerald-500/20 rounded-lg mr-3 flex-shrink-0">
-                          <FileText className="w-5 h-5 text-emerald-400" />
+                        <div className="p-2 bg-blue-500/20 rounded-lg mr-3 flex-shrink-0">
+                          <FileText className="w-5 h-5 text-blue-400" />
                         </div>
                         <div className="text-left min-w-0">
-                          <p className="text-sm font-medium text-gray-200 truncate">{file.name}</p>
+                          <p className="text-sm font-medium text-white truncate">{file.name}</p>
                           <p className="text-xs text-gray-500">{formatBytes(file.size)}</p>
                         </div>
                       </div>
@@ -232,7 +232,7 @@ const FileEncryptionPage = () => {
                     <div className="py-4">
                       <Upload className="w-10 h-10 text-gray-500 mx-auto mb-3" />
                       <p className="text-sm text-gray-400">
-                        <span className="text-emerald-400 font-semibold">Click to upload</span> or drag & drop
+                        <span className="text-blue-400 font-semibold">Click to upload</span> or drag & drop
                       </p>
                       <p className="text-xs text-gray-600 mt-1">Any file type • Max 5 GB</p>
                     </div>
@@ -261,7 +261,7 @@ const FileEncryptionPage = () => {
                     value={passphrase}
                     onChange={(e) => setPassphrase(e.target.value)}
                     placeholder="Enter a strong passphrase (min 8 characters)"
-                    className="w-full bg-gray-900 border border-gray-700 rounded-xl pl-12 pr-12 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all placeholder-gray-600 text-sm"
+                    className="w-full bg-black border border-white/10 rounded-xl pl-12 pr-12 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder-gray-600 text-sm"
                   />
                   <button
                     type="button"
@@ -282,7 +282,7 @@ const FileEncryptionPage = () => {
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     {confirmPassphrase && passphrase === confirmPassphrase
-                      ? <ShieldCheck className="w-5 h-5 text-emerald-500" />
+                      ? <ShieldCheck className="w-5 h-5 text-blue-500" />
                       : <Lock className="w-5 h-5 text-gray-500" />
                     }
                   </div>
@@ -291,12 +291,12 @@ const FileEncryptionPage = () => {
                     value={confirmPassphrase}
                     onChange={(e) => setConfirmPassphrase(e.target.value)}
                     placeholder="Re-enter your passphrase"
-                    className={`w-full bg-gray-900 border rounded-xl pl-12 pr-12 py-3 text-gray-100 focus:outline-none focus:ring-2 transition-all placeholder-gray-600 text-sm ${
+                    className={`w-full bg-black border rounded-xl pl-12 pr-12 py-3 text-white focus:outline-none focus:ring-2 transition-all placeholder-gray-600 text-sm ${
                       confirmPassphrase && passphrase !== confirmPassphrase
                         ? 'border-red-500/50 focus:ring-red-500/30'
                         : confirmPassphrase && passphrase === confirmPassphrase
-                        ? 'border-emerald-500/50 focus:ring-emerald-500/30'
-                        : 'border-gray-700 focus:ring-emerald-500/50'
+                        ? 'border-blue-500/50 focus:ring-blue-500/30'
+                        : 'border-white/10 focus:ring-blue-500/50'
                     }`}
                   />
                   <button
@@ -319,9 +319,9 @@ const FileEncryptionPage = () => {
                     <span>Uploading & encrypting...</span>
                     <span>{progress}%</span>
                   </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-zinc-900 rounded-full h-2">
                     <div
-                      className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-blue-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${progress}%` }}
                     />
                   </div>
@@ -331,7 +331,7 @@ const FileEncryptionPage = () => {
               <button
                 type="submit"
                 disabled={isLoading || !file || !passphrase || passphrase !== confirmPassphrase}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.6)]"
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_-5px_rgba(59,130,246,0.4)] hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.6)]"
               >
                 {isLoading ? (
                   <>

@@ -8,7 +8,7 @@ export const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: b
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
       </div>
     );

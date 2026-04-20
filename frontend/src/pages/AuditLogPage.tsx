@@ -63,24 +63,24 @@ const AuditLogPage = () => {
       return <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded-md text-xs font-bold border border-blue-500/30">ENCRYPT</span>;
     }
     if (operation.includes('DECRYPT')) {
-      return <span className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded-md text-xs font-bold border border-purple-500/30">DECRYPT</span>;
+      return <span className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded-md text-xs font-bold border border-blue-500/30">DECRYPT</span>;
     }
-    return <span className="px-2 py-1 bg-gray-500/20 text-gray-400 rounded-md text-xs font-bold border border-gray-500/30">{operation}</span>;
+    return <span className="px-2 py-1 bg-white/10 text-gray-400 rounded-md text-xs font-bold border border-white/10">{operation}</span>;
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-black text-white p-8 flex flex-col items-center">
       <div className="max-w-5xl w-full">
         <Link to="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors">
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back to Dashboard
         </Link>
 
-        <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-xl">
+        <div className="bg-zinc-950 rounded-2xl p-8 border border-white/10 shadow-xl">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center">
-              <div className="p-3 bg-gray-500/20 rounded-xl mr-4 border border-gray-600/30">
-                <ClipboardList className="w-8 h-8 text-gray-300" />
+              <div className="p-3 bg-blue-500/10 rounded-xl mr-4 border border-blue-500/20">
+                <ClipboardList className="w-8 h-8 text-blue-500" />
               </div>
               <div>
                 <h1 className="text-3xl font-bold">Audit Logs</h1>
@@ -89,7 +89,7 @@ const AuditLogPage = () => {
             </div>
             <button 
               onClick={fetchLogs}
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-semibold transition-colors flex items-center"
+              className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 rounded-lg text-sm font-semibold transition-colors flex items-center border border-white/10"
             >
               Refresh
             </button>
@@ -108,7 +108,7 @@ const AuditLogPage = () => {
               <p>Loading audit logs...</p>
             </div>
           ) : isGuest ? (
-            <div className="py-16 flex flex-col items-center justify-center bg-gray-900/50 rounded-xl border border-dashed border-gray-700">
+            <div className="py-16 flex flex-col items-center justify-center bg-black/50 rounded-xl border border-dashed border-white/10">
               <UserPlus className="w-12 h-12 text-blue-500 mb-4" />
               <h3 className="text-xl font-bold text-gray-200 mb-2">Activity Tracking Unavailable</h3>
               <p className="text-gray-400 max-w-md text-center mb-6">
@@ -122,25 +122,25 @@ const AuditLogPage = () => {
               </Link>
             </div>
           ) : logs.length === 0 ? (
-            <div className="py-16 flex flex-col items-center justify-center bg-gray-900/50 rounded-xl border border-dashed border-gray-700">
+            <div className="py-16 flex flex-col items-center justify-center bg-black/50 rounded-xl border border-dashed border-white/10">
               <ShieldAlert className="w-12 h-12 text-gray-500 mb-3" />
               <h3 className="text-xl font-bold text-gray-400 mb-1">No Activity Found</h3>
               <p className="text-gray-500">You haven't performed any encryption or decryption operations yet.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-xl border border-gray-700">
+            <div className="overflow-x-auto rounded-xl border border-white/10">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-gray-900 border-b border-gray-700 text-gray-400 text-sm">
+                  <tr className="bg-black border-b border-white/10 text-gray-400 text-sm">
                     <th className="p-4 font-semibold">Operation</th>
                     <th className="p-4 font-semibold">File Details</th>
                     <th className="p-4 font-semibold">Size</th>
                     <th className="p-4 font-semibold text-right">Timestamp</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-700/50">
+                <tbody className="divide-y divide-white/5">
                   {logs.map((log) => (
-                    <tr key={log.id} className="hover:bg-gray-750 transition-colors bg-gray-800">
+                    <tr key={log.id} className="hover:bg-zinc-900 transition-colors bg-zinc-950">
                       <td className="p-4 align-middle">
                         {getOperationBadge(log.action)}
                       </td>

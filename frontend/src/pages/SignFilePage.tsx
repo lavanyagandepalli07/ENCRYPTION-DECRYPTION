@@ -136,16 +136,16 @@ const SignFilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-6">
+    <div className="min-h-screen bg-black text-white p-6">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <Link to="/" className="p-2 rounded-xl bg-gray-800 border border-gray-700 hover:border-orange-500/50 transition-colors">
+          <Link to="/" className="p-2 rounded-xl bg-zinc-900 border border-white/10 hover:border-blue-500/50 transition-colors">
             <ArrowLeft className="w-5 h-5 text-gray-400" />
           </Link>
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-orange-500/20 rounded-xl">
-              <PenTool className="w-6 h-6 text-orange-400" />
+            <div className="p-3 bg-blue-500/20 rounded-xl">
+              <PenTool className="w-6 h-6 text-blue-400" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-100">Sign a File</h1>
@@ -159,15 +159,15 @@ const SignFilePage = () => {
           {(['upload', 'key', 'result'] as Step[]).map((s, i) => (
             <div key={s} className="flex items-center gap-2 flex-1">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors
-                ${step === s ? 'bg-orange-500 text-white' : 
-                  (step === 'key' && s === 'upload') || step === 'result' ? 'bg-orange-500/30 text-orange-400' : 
-                  'bg-gray-700 text-gray-500'}`}>
+                ${step === s ? 'bg-blue-600 text-white' : 
+                  (step === 'key' && s === 'upload') || step === 'result' ? 'bg-blue-600/30 text-blue-400' : 
+                  'bg-zinc-800 text-gray-500'}`}>
                 {i + 1}
               </div>
-              <span className={`text-sm capitalize ${step === s ? 'text-orange-400' : 'text-gray-500'}`}>
+              <span className={`text-sm capitalize ${step === s ? 'text-blue-400' : 'text-gray-500'}`}>
                 {s === 'upload' ? 'Select File' : s === 'key' ? 'Private Key' : 'Signature'}
               </span>
-              {i < 2 && <div className={`flex-1 h-px ${step === 'result' || (step === 'key' && s === 'upload') ? 'bg-orange-500/30' : 'bg-gray-700'}`} />}
+              {i < 2 && <div className={`flex-1 h-px ${step === 'result' || (step === 'key' && s === 'upload') ? 'bg-blue-600/30' : 'bg-zinc-800'}`} />}
             </div>
           ))}
         </div>
@@ -188,9 +188,9 @@ const SignFilePage = () => {
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-2xl p-16 text-center cursor-pointer transition-all duration-300
-              ${isDragging ? 'border-orange-400 bg-orange-500/10' : 'border-gray-700 hover:border-orange-500/50 bg-gray-800/50 hover:bg-gray-800'}`}
+              ${isDragging ? 'border-blue-400 bg-blue-500/10' : 'border-white/10 hover:border-blue-500/50 bg-zinc-950/50 hover:bg-zinc-950'}`}
           >
-            <Upload className={`w-12 h-12 mx-auto mb-4 ${isDragging ? 'text-orange-400' : 'text-gray-500'}`} />
+            <Upload className={`w-12 h-12 mx-auto mb-4 ${isDragging ? 'text-blue-400' : 'text-gray-500'}`} />
             <p className="text-xl font-semibold text-gray-300 mb-2">Drop your file here</p>
             <p className="text-gray-500 text-sm">or click to browse</p>
             <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
@@ -201,9 +201,9 @@ const SignFilePage = () => {
         {step === 'key' && file && (
           <div className="space-y-6">
             {/* File Info */}
-            <div className="flex items-center gap-4 p-4 bg-gray-800 rounded-xl border border-gray-700">
-              <div className="p-3 bg-orange-500/20 rounded-lg">
-                <Upload className="w-5 h-5 text-orange-400" />
+            <div className="flex items-center gap-4 p-4 bg-zinc-950 rounded-xl border border-white/10">
+              <div className="p-3 bg-blue-500/20 rounded-lg">
+                <Upload className="w-5 h-5 text-blue-400" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-gray-200 truncate">{file.name}</p>
@@ -213,16 +213,16 @@ const SignFilePage = () => {
             </div>
 
             {/* Key Generation */}
-            <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
+            <div className="bg-zinc-950 rounded-xl border border-white/10 p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <Key className="w-5 h-5 text-orange-400" />
-                  <h3 className="font-semibold text-gray-200">RSA Key Pair</h3>
+                  <Key className="w-5 h-5 text-blue-400" />
+                  <h3 className="font-semibold text-white">RSA Key Pair</h3>
                 </div>
                 <button
                   onClick={generateKeyPair}
                   disabled={isGeneratingKey}
-                  className="flex items-center gap-2 px-4 py-2 bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
                 >
                   {isGeneratingKey ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
                   Generate New Key Pair
@@ -243,7 +243,7 @@ const SignFilePage = () => {
                         </button>
                       </div>
                     </div>
-                    <p className="text-xs text-green-400 font-mono break-all line-clamp-3">{generatedKeyPair.publicKey}</p>
+                    <p className="text-xs text-blue-400 font-mono break-all line-clamp-3">{generatedKeyPair.publicKey}</p>
                   </div>
                   <div className="bg-gray-900 rounded-lg p-3 border border-red-500/20">
                     <div className="flex items-center justify-between mb-2">
@@ -269,7 +269,7 @@ const SignFilePage = () => {
                   onChange={(e) => setPrivateKey(e.target.value)}
                   placeholder="Paste your RSA private key (Base64 encoded, PKCS#8 format)..."
                   rows={5}
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-xl text-sm font-mono text-gray-300 placeholder-gray-600 focus:outline-none focus:border-orange-500/50 resize-none"
+                  className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl text-sm font-mono text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 resize-none"
                 />
               </div>
             </div>
@@ -277,7 +277,7 @@ const SignFilePage = () => {
             <button
               onClick={handleSign}
               disabled={isLoading || !privateKey.trim()}
-              className="w-full py-4 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-white text-lg transition-all duration-200 flex items-center justify-center gap-3 shadow-lg shadow-orange-500/20"
+              className="w-full py-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-white text-lg transition-all duration-200 flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20"
             >
               {isLoading ? <><Loader2 className="w-5 h-5 animate-spin" /> Signing...</> : <><PenTool className="w-5 h-5" /> Sign File</>}
             </button>
@@ -293,36 +293,36 @@ const SignFilePage = () => {
               <p className="text-sm text-gray-400">{result.fileName} · {formatBytes(result.fileSize)} · {result.algorithm}</p>
             </div>
 
-            <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
+            <div className="bg-zinc-950 rounded-xl border border-white/10 p-6">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-sm font-semibold text-gray-300">Digital Signature (Base64)</span>
+                <span className="text-sm font-semibold text-white">Digital Signature (Base64)</span>
                 <div className="flex gap-3">
                   <button 
                     onClick={() => copyToClipboard(result.signature, 'sig')} 
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-xl text-sm text-gray-300 transition-all border border-gray-600 hover:border-orange-500/30"
+                    className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 rounded-xl text-sm text-gray-300 transition-all border border-white/10 hover:border-blue-500/30"
                   >
                     {copiedField === 'sig' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                     {copiedField === 'sig' ? 'Copied!' : 'Copy'}
                   </button>
                   <button 
                     onClick={() => downloadText(result.signature, `${result.fileName}.sig`)} 
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-xl text-sm text-gray-300 transition-all border border-gray-600 hover:border-orange-500/30"
+                    className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 rounded-xl text-sm text-gray-300 transition-all border border-white/10 hover:border-blue-500/30"
                   >
                     <Download className="w-4 h-4" /> Detached Sig
                   </button>
                   <button 
                     onClick={() => result.signedFile ? downloadBase64File(result.signedFile, `signed_${result.fileName}`) : downloadFile(file!)} 
-                    className="flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-500 rounded-xl text-sm text-white font-bold transition-all shadow-lg shadow-orange-500/20"
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-sm text-white font-bold transition-all shadow-lg shadow-blue-500/20"
                   >
                     <Download className="w-4 h-4" /> Download Signed File
                   </button>
                 </div>
               </div>
-              <div className="bg-gray-900 rounded-xl p-5 border border-gray-700/50 relative group">
-                <p className="text-xs font-mono text-orange-400/90 break-all leading-relaxed max-h-32 overflow-y-auto custom-scrollbar">
+              <div className="bg-black rounded-xl p-5 border border-white/10 relative group">
+                <p className="text-xs font-mono text-blue-400/90 break-all leading-relaxed max-h-32 overflow-y-auto custom-scrollbar">
                   {result.signature}
                 </p>
-                <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none rounded-b-xl" />
+                <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black to-transparent pointer-events-none rounded-b-xl" />
               </div>
               <p className="mt-4 text-xs text-gray-500 flex items-center gap-2">
                 <AlertCircle className="w-3.5 h-3.5" />
@@ -332,7 +332,7 @@ const SignFilePage = () => {
 
             <button
               onClick={reset}
-              className="w-full py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-orange-500/50 rounded-xl font-medium text-gray-300 transition-all duration-200"
+              className="w-full py-3 bg-zinc-950 hover:bg-zinc-900 border border-white/10 hover:border-blue-500/50 rounded-xl font-medium text-white transition-all duration-200"
             >
               Sign Another File
             </button>
