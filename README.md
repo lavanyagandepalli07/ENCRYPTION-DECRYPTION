@@ -300,6 +300,9 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
    ```
    This enables system-wide log viewing and user management.
 
+   > [!IMPORTANT]
+   > **Security Note**: The public "Admin" signup option has been removed from the interface to prevent unauthorized administrative accounts. Existing admins can manage roles via the User Management console.
+
 ## 🧪 Testing
 
 ### Backend Unit Tests

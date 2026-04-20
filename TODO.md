@@ -83,7 +83,7 @@
 - [x] Add confirm dialog before encryption/decryption
 - [x] Add session expiry warning
 - [x] Add responsive design for mobile
-- [x] Implement Guest Mode for frictionless access to core tools
+- [x] Implement Guest Mode for frictionless access to core tools ✅
 
 ### Frontend Testing
 - [x] Test login flow with Supabase
@@ -157,7 +157,11 @@ c
 - [x] Create frontend `AuditLogPage.tsx` with a data table/grid to display records, filter, and sort
 - [x] Connect frontend to existing `GET /api/audit-logs` backend endpoint
 
-### Future Enhancements (Phase 7+)
+- [x] Implement Admin Panel & User Management
+  - [x] Admin role selection during signup (Initially implemented)
+  - [x] Remove Admin button from Signup once admin is created (Security Hardening)
+  - [x] Admin Dashboard for Audit Logs
+  - [x] User Management console (Promote/Demote/Delete)
 - [ ] Support additional algorithms (Twofish, Blowfish, RSA, ECC)
 - [ ] Batch file encryption
 - [ ] Scheduled encryption tasks
