@@ -144,7 +144,7 @@ const FileEncryptionPage = () => {
             Module: CRYPTO_VAULT_ENCRYPT
           </div>
           <h1 className="text-4xl font-black tech-font tracking-tighter uppercase">Vault_Encryption</h1>
-          <p className="text-zinc-500 text-sm font-medium mt-2">Initialize secure data encapsulation protocols for system resources.</p>
+          <p className="text-description text-sm font-medium mt-2">Initialize secure data encapsulation protocols for system resources.</p>
         </div>
       </div>
 
@@ -165,7 +165,7 @@ const FileEncryptionPage = () => {
               </div>
               <div>
                 <h3 className="text-xl font-bold tech-font">ENCRYPTION_SUCCESS</h3>
-                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">Resource encapsulated: {success.fileId}</p>
+                <p className="text-[10px] text-muted font-bold uppercase tracking-widest mt-1">Resource encapsulated: {success.fileId}</p>
               </div>
             </div>
             <button 
@@ -225,7 +225,7 @@ const FileEncryptionPage = () => {
 
           {file && (
             <div className="border-sharp bg-card p-8">
-              <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mb-6">Security_Algorithm_Override</p>
+              <p className="text-[10px] font-bold text-muted uppercase tracking-widest mb-6">Security_Algorithm_Override</p>
               <div className="flex flex-wrap gap-3">
                 {algorithms.map((alg) => (
                   <button
@@ -268,12 +268,12 @@ const FileEncryptionPage = () => {
                       value={passphrase}
                       onChange={(e) => setPassphrase(e.target.value)}
                       placeholder="ENTER_SECURE_KEY..."
-                      className="w-full bg-[var(--bg-main)] border border-sharp px-6 py-5 text-xs font-mono focus:outline-none focus:border-blue-500/50 transition-all font-bold placeholder:text-zinc-800"
+                      className="w-full bg-[var(--bg-main)] border border-sharp px-6 py-5 text-xs font-mono focus:outline-none focus:border-blue-500/50 transition-all font-bold placeholder:text-zinc-500"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassphrase(!showPassphrase)}
-                      className="absolute inset-y-0 right-0 pr-6 flex items-center text-zinc-700 hover:text-blue-500 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-6 flex items-center text-muted hover:text-blue-500 transition-colors"
                     >
                       {showPassphrase ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -288,12 +288,12 @@ const FileEncryptionPage = () => {
                       value={confirmPassphrase}
                       onChange={(e) => setConfirmPassphrase(e.target.value)}
                       placeholder="RE_ENTER_SECURE_KEY..."
-                      className="w-full bg-[var(--bg-main)] border border-sharp px-6 py-5 text-xs font-mono focus:outline-none focus:border-blue-500/50 transition-all font-bold placeholder:text-zinc-800"
+                      className="w-full bg-[var(--bg-main)] border border-sharp px-6 py-5 text-xs font-mono focus:outline-none focus:border-blue-500/50 transition-all font-bold placeholder:text-zinc-500"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassphrase(!showConfirmPassphrase)}
-                      className="absolute inset-y-0 right-0 pr-6 flex items-center text-zinc-700 hover:text-blue-500 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-6 flex items-center text-muted hover:text-blue-500 transition-colors"
                     >
                       {showConfirmPassphrase ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>

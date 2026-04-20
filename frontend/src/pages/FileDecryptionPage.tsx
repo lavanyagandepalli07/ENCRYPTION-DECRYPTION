@@ -113,7 +113,7 @@ const FileDecryptionPage = () => {
           </div>
           <div className="ml-6">
             <h1 className="text-3xl font-extrabold tracking-tight mb-1">Upload & Decrypt File</h1>
-            <p className="text-blue-500/40 font-bold tracking-tight uppercase text-xs">Recover your files securely from the vault</p>
+            <p className="text-blue-500/60 font-bold tracking-tight uppercase text-xs">Recover your files securely from the vault</p>
           </div>
         </div>
 
@@ -127,7 +127,7 @@ const FileDecryptionPage = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* File ID */}
           <div className="space-y-2">
-            <label className="text-xs font-bold text-blue-500/40 uppercase tracking-[0.2em] ml-1 block">Resource identifier</label>
+            <label className="text-xs font-bold text-muted uppercase tracking-[0.2em] ml-1 block">Resource identifier</label>
             <input
               type="text"
               value={fileId}
@@ -139,7 +139,7 @@ const FileDecryptionPage = () => {
 
           {/* Passphrase with toggle */}
           <div className="space-y-2">
-            <label className="text-xs font-bold text-blue-500/40 uppercase tracking-[0.2em] ml-1 block">Decryption sequence</label>
+            <label className="text-xs font-bold text-muted uppercase tracking-[0.2em] ml-1 block">Decryption sequence</label>
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-500">
                 <Unlock className="w-5 h-5 text-blue-500/40 group-focus-within:text-blue-500" />
@@ -164,7 +164,7 @@ const FileDecryptionPage = () => {
           {/* Progress bar */}
           {isLoading && (
             <div className="animate-fade-in pt-4">
-              <div className="flex justify-between text-[10px] font-bold text-blue-500/40 uppercase tracking-widest mb-3">
+              <div className="flex justify-between text-[10px] font-bold text-muted uppercase tracking-widest mb-3">
                 <span>Synchronizing Protocol...</span>
                 {progress > 0 && <span className="text-blue-500">{progress}%</span>}
               </div>

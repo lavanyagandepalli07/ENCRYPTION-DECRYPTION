@@ -60,7 +60,7 @@ const Sidebar = () => {
                 className={`flex items-center gap-4 px-4 py-3 text-sm font-medium transition-all duration-300 group ${
                   isActive 
                     ? 'nav-item-active' 
-                    : 'text-zinc-500 hover:text-blue-400 hover:bg-blue-600/5'
+                    : 'text-muted hover:text-blue-400 hover:bg-blue-600/5'
                 }`}
               >
                 <item.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-blue-400' : 'group-hover:text-blue-400'}`} />
@@ -79,7 +79,7 @@ const Sidebar = () => {
               className={`flex items-center gap-4 px-4 py-3 text-sm font-medium transition-all duration-300 group ${
                 location.pathname.startsWith('/admin') 
                   ? 'nav-item-active' 
-                  : 'text-zinc-500 hover:text-blue-400 hover:bg-blue-600/5'
+                  : 'text-muted hover:text-blue-400 hover:bg-blue-600/5'
               }`}
             >
               <Settings className="w-5 h-5" />

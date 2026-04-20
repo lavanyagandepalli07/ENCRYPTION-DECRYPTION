@@ -54,10 +54,10 @@ const ConfirmModal = ({
         onClick={onCancel}
       />
       {/* Modal */}
-      <div className="relative border-sharp bg-zinc-900/95 backdrop-blur-xl shadow-2xl max-w-sm w-full p-8 animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative border-sharp bg-card backdrop-blur-xl shadow-2xl max-w-sm w-full p-8 animate-in fade-in zoom-in-95 duration-200">
         <button 
           onClick={onCancel}
-          className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
+          className="absolute top-4 right-4 text-muted hover:text-white transition-colors"
         >
           <X className="w-5 h-5" />
         </button>

@@ -86,11 +86,11 @@ const SignupPage = () => {
             </div>
             <div className="text-left">
               <h2 className="text-3xl font-extrabold tracking-tight leading-none">SecureVault</h2>
-              <p className="text-[10px] uppercase tracking-[0.3em] text-blue-500/40 font-bold mt-2">Protocol Genesis</p>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-blue-500/60 font-bold mt-2">Protocol Genesis</p>
             </div>
           </Link>
           <h1 className="text-4xl font-extrabold tracking-tight mb-3">Initialize Profile</h1>
-          <p className="text-blue-500/40 font-bold tracking-tight uppercase text-xs">Begin your journey into secure communication</p>
+          <p className="text-blue-500/60 font-bold tracking-tight uppercase text-xs">Begin your journey into secure communication</p>
         </div>
 
         <div className="glass rounded-[3rem] p-8 sm:p-12 border-blue-500/10 shadow-2xl relative overflow-hidden group">
@@ -113,12 +113,12 @@ const SignupPage = () => {
               <div className="w-full bg-blue-500/10 h-2 rounded-full overflow-hidden">
                 <div className="bg-blue-600 h-full animate-[progress_5s_linear_forwards]" style={{ width: '100%' }}></div>
               </div>
-              <p className="text-[10px] text-blue-500/40 uppercase tracking-[0.4em] mt-6 font-bold">Auto-Redirect Protocol Active</p>
+              <p className="text-[10px] text-muted uppercase tracking-[0.4em] mt-6 font-bold">Auto-Redirect Protocol Active</p>
             </div>
           ) : (
             <form onSubmit={handleSignup} className="space-y-6">
               <div className="space-y-3">
-                <label className="text-[10px] font-bold text-blue-500/40 uppercase tracking-[0.2em] ml-1">Identity Identifier</label>
+                <label className="text-[10px] font-bold text-muted uppercase tracking-[0.2em] ml-1">Identity Identifier</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-500">
                     <Mail className="w-5 h-5 text-blue-500/30 group-focus-within:text-blue-500" />
@@ -135,7 +135,7 @@ const SignupPage = () => {
               </div>
 
               <div className="space-y-3">
-                <label className="text-[10px] font-bold text-blue-500/40 uppercase tracking-[0.2em] ml-1">Establish Secret Key</label>
+                <label className="text-[10px] font-bold text-muted uppercase tracking-[0.2em] ml-1">Establish Secret Key</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-500">
                     <Lock className="w-5 h-5 text-blue-500/30 group-focus-within:text-blue-500" />
@@ -152,7 +152,7 @@ const SignupPage = () => {
               </div>
 
               <div className="space-y-3">
-                <label className="text-[10px] font-bold text-blue-500/40 uppercase tracking-[0.2em] ml-1">Confirm Sequence</label>
+                <label className="text-[10px] font-bold text-muted uppercase tracking-[0.2em] ml-1">Confirm Sequence</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-500">
                     <Lock className="w-5 h-5 text-blue-500/30 group-focus-within:text-blue-500" />
@@ -190,7 +190,7 @@ const SignupPage = () => {
                   <div className="w-full border-t border-blue-500/10"></div>
                 </div>
                 <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-[0.3em]">
-                  <span className="bg-[#f8fafc] dark:bg-[#020617] px-4 text-blue-500/40 transition-colors duration-500">Protocol Alternative</span>
+                  <span className="bg-[#f8fafc] dark:bg-[#020617] px-4 text-muted transition-colors duration-500">Protocol Alternative</span>
                 </div>
               </div>
 
@@ -206,7 +206,7 @@ const SignupPage = () => {
           )}
 
           <div className="mt-12 text-center text-sm font-bold">
-            <span className="text-blue-500/40 uppercase tracking-widest text-[10px]">Known identity?</span>{' '}
+            <span className="text-muted uppercase tracking-widest text-[10px]">Known identity?</span>{' '}
             <Link to="/login" className="text-blue-500 hover:text-blue-400 transition-colors ml-2 uppercase tracking-widest text-[10px]">
               Access existing vault
             </Link>

@@ -152,9 +152,9 @@ const SignFilePage = () => {
             Protocol: RSA_SIGN_V2
           </div>
           <h1 className="text-4xl font-black tech-font tracking-tighter">FILE_SIGNING</h1>
-          <p className="text-zinc-500 text-sm font-medium mt-2">Generate immutable cryptographic proofs for digital assets.</p>
+          <p className="text-description text-sm font-medium mt-2">Generate immutable cryptographic proofs for digital assets.</p>
         </div>
-        <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+        <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-muted">
           <span className={step === 'upload' ? 'text-blue-500' : ''}>01_SOURCE</span>
           <ChevronRight className="w-3 h-3" />
           <span className={step === 'key' ? 'text-blue-500' : ''}>02_AUTHORITY</span>
@@ -270,7 +270,7 @@ const SignFilePage = () => {
                 value={privateKey}
                 onChange={(e) => setPrivateKey(e.target.value)}
                 placeholder="INPUT_PRIVATE_KEY_PKCS8..."
-                className="w-full h-48 px-6 py-5 bg-[var(--bg-main)] border border-sharp text-xs font-mono focus:outline-none focus:border-blue-500/50 transition-all resize-none font-bold placeholder:text-zinc-800"
+                className="w-full h-48 px-6 py-5 bg-[var(--bg-main)] border border-sharp text-xs font-mono focus:outline-none focus:border-blue-500/50 transition-all resize-none font-bold placeholder:text-zinc-500"
               />
 
               <button
