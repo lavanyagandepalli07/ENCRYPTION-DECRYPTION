@@ -90,7 +90,7 @@ const TopNav: React.FC<TopNavProps> = ({ showSidebar }) => {
 
           {/* Dropdown Menu */}
           {isOpen && (
-            <div className="absolute top-full right-0 mt-2 w-64 border-sharp bg-card backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="absolute top-full right-0 mt-2 w-64 border-sharp bg-[var(--bg-main)] shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 z-50">
               <div className="p-4 border-b border-white/5">
                 <p className="text-[10px] font-bold text-muted uppercase tracking-widest mb-1">Session_Status</p>
                 <p className="text-xs font-mono truncate text-description">{user?.email || 'GUEST_ACCESS'}</p>
@@ -111,7 +111,7 @@ const TopNav: React.FC<TopNavProps> = ({ showSidebar }) => {
                   className="w-full flex items-center gap-3 px-4 py-3 text-xs font-bold text-muted hover:text-blue-500 hover:bg-blue-600/10 transition-all tech-font"
                 >
                   <HelpCircle className="w-4 h-4" />
-                  REQUEST_SPECS
+                  FEEDBACK_&_SUPPORT
                 </Link>
                 
                 <div className="my-2 border-t border-white/5"></div>
