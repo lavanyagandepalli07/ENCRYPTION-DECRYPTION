@@ -1,11 +1,15 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { User as UserIcon, LogOut, HelpCircle, Sun, Moon, ChevronDown, SwitchCamera } from 'lucide-react';
+import { User as UserIcon, LogOut, HelpCircle, Sun, Moon, ChevronDown, SwitchCamera, LayoutDashboard, ShieldAlert } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { Link, useNavigate } from 'react-router-dom';
 
-const TopNav = () => {
+interface TopNavProps {
+  showSidebar: boolean;
+}
+
+const TopNav: React.FC<TopNavProps> = ({ showSidebar }) => {
   const { user, signOut, role, isGuest } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
@@ -23,12 +27,38 @@ const TopNav = () => {
   }, []);
 
   return (
-    <div className="fixed top-0 right-0 left-72 h-20 flex items-center justify-end px-8 z-40 bg-transparent pointer-events-none">
-      <div className="flex items-center gap-4 pointer-events-auto">
+    <div className={`fixed top-0 right-0 h-20 flex items-center justify-between px-8 z-40 bg-[var(--bg-main)]/80 backdrop-blur-md border-b border-sharp transition-all duration-500 ${showSidebar ? 'left-72' : 'left-0'}`}>
+      {/* Left Side: Brand/Back to Dashboard (Only when sidebar is hidden) */}
+      <div className={`flex items-center gap-4 transition-opacity duration-500 ${showSidebar ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}>
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="relative p-2 bg-blue-600/10 border border-blue-500/30 glow-blue">
+            <ShieldAlert className="w-5 h-5 text-blue-400" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-lg font-bold tracking-tighter tech-font leading-none">
+              SECURE<span className="text-blue-500">VAULT</span>
+            </span>
+            <span className="text-[8px] uppercase tracking-[0.2em] text-blue-500/60 font-bold">Protocol_Gate</span>
+          </div>
+        </Link>
+        
+        <div className="h-8 w-[1px] bg-white/10 mx-2"></div>
+        
+        <Link 
+          to="/" 
+          className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-sharp hover:bg-blue-600/10 transition-all text-xs font-bold tech-font text-zinc-400 hover:text-blue-400"
+        >
+          <LayoutDashboard className="w-4 h-4" />
+          DASHBOARD
+        </Link>
+      </div>
+
+      {/* Right Side: Actions */}
+      <div className="flex items-center gap-4">
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
-          className="p-3 border-sharp bg-white/5 backdrop-blur-md hover:bg-blue-600/10 transition-all text-zinc-500 hover:text-blue-500 group"
+          className="p-3 border border-sharp bg-white/5 backdrop-blur-md hover:bg-blue-600/10 transition-all text-zinc-500 hover:text-blue-500 group"
           title={theme === 'light' ? "Activate Dark Protocol" : "Activate Light Protocol"}
         >
           {theme === 'light' ? (
@@ -42,7 +72,7 @@ const TopNav = () => {
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-3 p-2 pr-4 border-sharp bg-white/5 backdrop-blur-md hover:bg-blue-600/10 transition-all group"
+            className="flex items-center gap-3 p-2 pr-4 border border-sharp bg-white/5 backdrop-blur-md hover:bg-blue-600/10 transition-all group"
           >
             <div className="w-10 h-10 bg-blue-600 flex items-center justify-center text-white glow-blue">
               <UserIcon className="w-5 h-5" />

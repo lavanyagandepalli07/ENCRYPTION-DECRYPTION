@@ -31,7 +31,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-72 h-screen fixed left-0 top-0 bg-[var(--bg-main)] border-r border-sharp flex flex-col z-50">
+    <div className="w-72 h-full relative bg-[var(--bg-main)] border-r border-sharp flex flex-col z-50">
       {/* Brand Header */}
       <div className="p-8 border-b border-sharp bg-gradient-to-b from-blue-600/5 to-transparent">
         <Link to="/" className="flex items-center gap-3 group">

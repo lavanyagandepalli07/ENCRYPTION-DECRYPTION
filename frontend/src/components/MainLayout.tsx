@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopNav from './TopNav';
 
@@ -8,13 +9,19 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const location = useLocation();
+  // Only show sidebar on the dashboard
+  const showSidebar = location.pathname === '/';
+
   return (
     <div className="min-h-screen bg-[var(--bg-main)] text-[var(--text-main)] flex overflow-x-hidden">
-      {/* Fixed Sidebar */}
-      <Sidebar />
+      {/* Fixed Sidebar with Slide Animation */}
+      <div className={`fixed inset-y-0 left-0 z-50 transition-transform duration-500 ease-in-out transform ${showSidebar ? 'translate-x-0' : '-translate-x-full'}`}>
+        <Sidebar />
+      </div>
 
       {/* Main Content Area */}
-      <div className="flex-grow ml-72 flex flex-col relative min-h-screen">
+      <div className={`flex-grow flex flex-col relative min-h-screen transition-all duration-500 ease-in-out ${showSidebar ? 'ml-72' : 'ml-0'}`}>
         {/* Dynamic Background Grid */}
         <div className="fixed inset-0 z-0 bg-grid opacity-20 pointer-events-none"></div>
         
@@ -25,10 +32,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         </div>
 
         {/* Top Navigation */}
-        <TopNav />
+        <TopNav showSidebar={showSidebar} />
 
         {/* Content Wrapper */}
-        <main className="relative z-10 flex-grow px-8 py-12 lg:px-16 lg:py-20 mt-16">
+        <main className="relative z-10 flex-grow px-8 py-12 lg:px-16 lg:py-20 mt-24">
           <div className="max-w-6xl mx-auto w-full">
             {children}
           </div>
