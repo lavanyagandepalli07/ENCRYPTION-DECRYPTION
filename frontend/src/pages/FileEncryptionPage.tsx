@@ -144,17 +144,11 @@ const FileEncryptionPage = () => {
           </div>
           <div>
             <h1 className="text-4xl font-extrabold tracking-tight mb-2">Upload & Encrypt File</h1>
-            <p className="text-blue-500/40 font-bold tracking-tight uppercase text-xs">Military-grade AES-256-GCM data protection</p>
+            <p className="text-blue-500/40 font-bold tracking-tight uppercase text-xs">AES-256-GCM data protection</p>
           </div>
         </div>
         
-        <div className="flex items-center gap-3 px-6 py-4 bg-blue-500/5 rounded-2xl border border-blue-500/10">
-          <Lock className="w-5 h-5 text-blue-500" />
-          <div className="text-left">
-            <p className="text-[10px] font-bold text-blue-500/40 uppercase tracking-widest leading-tight">Security Level</p>
-            <p className="text-sm font-bold text-blue-500">Maximum (E2EE)</p>
-          </div>
-        </div>
+
       </div>
 
       {error && (

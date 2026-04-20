@@ -214,7 +214,7 @@ const SignupPage = () => {
         </div>
 
         <p className="mt-10 text-center text-[10px] text-blue-500/20 uppercase tracking-[0.4em] font-bold">
-          Military-Grade Genesis Protocol
+          Genesis Protocol
         </p>
       </div>
     </div>

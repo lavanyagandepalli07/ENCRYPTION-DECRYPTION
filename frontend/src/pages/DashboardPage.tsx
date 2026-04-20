@@ -3,7 +3,7 @@ import { Lock, Unlock, FileUp, FileDown, PenTool, ShieldCheck, Activity, Clipboa
 
 const DashboardPage = () => {
   const tools = [
-    { to: "/file-encrypt", icon: FileUp, title: "Upload & Encrypt File", desc: "Military-grade AES-256-GCM protection for your sensitive assets.", color: "blue" },
+    { to: "/file-encrypt", icon: FileUp, title: "Upload & Encrypt File", desc: "AES-256-GCM protection for your sensitive assets.", color: "blue" },
     { to: "/file-decrypt", icon: FileDown, title: "Upload & Decrypt File", desc: "Restore original data from your encrypted vault assets.", color: "blue" },
     { to: "/text-encrypt", icon: Lock, title: "Encrypt Text", desc: "Instantly transform messages into unbreakable cryptographic strings.", color: "blue" },
     { to: "/text-decrypt", icon: Unlock, title: "Decrypt Text", desc: "Decrypt secure communications with your master passphrase.", color: "blue" },
