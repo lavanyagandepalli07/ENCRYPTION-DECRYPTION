@@ -10,6 +10,15 @@ import confetti from 'canvas-confetti';
 
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024 * 1024; // 5 GB
 
+type EncryptionApiResponse = {
+  fileId?: string;
+  file_id?: string;
+  id?: string;
+  fileName?: string;
+  message?: string;
+  timestamp?: number;
+};
+
 
 const formatBytes = (bytes: number) => {
   if (bytes === 0) return '0 Bytes';
@@ -35,6 +44,10 @@ const FileEncryptionPage = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const algorithms = ['AES-256-GCM', 'CHACHA20-POLY1305', 'AES-128-CBC'];
+
+  const getResponseFileId = (data: EncryptionApiResponse): string => {
+    return (data.fileId || data.file_id || data.id || '').toString().trim();
+  };
 
   useEffect(() => {
     if (success) {
@@ -101,10 +114,15 @@ const FileEncryptionPage = () => {
       formData.append('file', file!);
       formData.append('passphrase', passphrase);
 
-      const response = await api.post('/encrypt', formData, {
+      const response = await api.post<EncryptionApiResponse>('/encrypt', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
 
       });
+
+      const responseFileId = getResponseFileId(response.data);
+      if (!responseFileId) {
+        throw new Error('Missing file ID in encryption response.');
+      }
 
       confetti({
         particleCount: 150,
@@ -113,10 +131,10 @@ const FileEncryptionPage = () => {
         colors: ['#00A3FF', '#0070FF', '#ffffff']
       });
 
-      setSuccess(response.data);
+      setSuccess({ ...response.data, fileId: responseFileId });
       
       // Download the encrypted file using authenticated api service
-      const downloadResponse = await api.get(`/download-encrypted/${response.data.fileId}`, {
+      const downloadResponse = await api.get(`/download-encrypted/${responseFileId}`, {
         responseType: 'blob'
       });
       
@@ -124,7 +142,8 @@ const FileEncryptionPage = () => {
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = downloadUrl;
-      link.setAttribute('download', `encrypted_${response.data.fileName || 'file'}.bin`);
+      // Save encrypted file with its ID so users can copy/paste it into decryption.
+      link.setAttribute('download', responseFileId);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

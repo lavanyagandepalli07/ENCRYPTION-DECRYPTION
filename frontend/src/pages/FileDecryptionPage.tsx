@@ -15,6 +15,12 @@ const FileDecryptionPage = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const location = useLocation();
 
+  const normalizeFileId = (value: string) => {
+    const trimmed = value.trim();
+    const encryptedFileMatch = trimmed.match(/(encrypted_[0-9a-fA-F-]{36}\.bin)/);
+    return encryptedFileMatch ? encryptedFileMatch[1] : trimmed;
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get('id');
@@ -27,8 +33,14 @@ const FileDecryptionPage = () => {
     e.preventDefault();
     setError(null);
 
-    if (!fileId.trim()) { setError('Please enter a valid File ID.'); return; }
+    const normalizedFileId = normalizeFileId(fileId);
+
+    if (!normalizedFileId) { setError('Please enter a valid File ID.'); return; }
     if (passphrase.length < 8) { setError('Passphrase must be at least 8 characters long.'); return; }
+
+    if (normalizedFileId !== fileId) {
+      setFileId(normalizedFileId);
+    }
 
     setShowConfirm(true);
   };
@@ -38,9 +50,11 @@ const FileDecryptionPage = () => {
     setIsLoading(true);
     setProgress(0);
 
+    const normalizedFileId = normalizeFileId(fileId);
+
     try {
       const response = await api.post(
-        `/decrypt/${fileId}`,
+        `/decrypt/${normalizedFileId}`,
         { passphrase },
         {
           responseType: 'blob',
@@ -141,7 +155,7 @@ const FileDecryptionPage = () => {
               type="text"
               value={fileId}
               onChange={(e) => setFileId(e.target.value)}
-              placeholder="Paste the UUID of the encrypted asset"
+              placeholder="Paste encrypted file ID (example: encrypted_xxx.bin)"
               className="w-full bg-blue-500/5 border border-blue-500/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:bg-blue-500/10 transition-all font-mono placeholder-blue-500/20 text-sm font-bold"
             />
           </div>
