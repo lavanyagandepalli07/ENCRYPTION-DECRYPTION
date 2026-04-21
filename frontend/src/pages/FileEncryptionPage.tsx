@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { ShieldCheck, Upload, AlertCircle, RefreshCw, Loader2, Key, Eye, EyeOff, Lock, ArrowLeft, FileCode } from 'lucide-react';
+import { ShieldCheck, Upload, AlertCircle, RefreshCw, Loader2, Key, Eye, EyeOff, Lock, ArrowLeft, FileCode, Copy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import PassphraseStrength from '../components/PassphraseStrength';
@@ -214,10 +214,18 @@ const FileEncryptionPage = () => {
                 </button>
               </div>
 
-              <div className="bg-black/60 border border-blue-500/30 p-6">
-                <div className="font-mono text-2xl text-blue-400 font-black tracking-widest break-all select-all text-center">
+              <div className="bg-black/60 border border-blue-500/30 p-8 shadow-inner relative group">
+                <div className="absolute top-2 right-2">
+                  <div className="flex gap-2">
+                    <div className="w-1 h-1 bg-blue-500/30 animate-ping"></div>
+                    <div className="w-1 h-1 bg-blue-500/30 animate-ping [animation-delay:0.2s]"></div>
+                    <div className="w-1 h-1 bg-blue-500/30 animate-ping [animation-delay:0.4s]"></div>
+                  </div>
+                </div>
+                <div className="font-mono text-3xl text-blue-400 font-black tracking-widest break-all select-all text-center drop-shadow-[0_0_10px_rgba(0,163,255,0.3)]">
                   {success.fileId}
                 </div>
+                <p className="text-center text-[9px] text-blue-500/40 font-black uppercase tracking-[0.5em] mt-4">Unique_Resource_Locator</p>
               </div>
 
               <div className="flex flex-col md:flex-row gap-6 items-center bg-blue-950/40 p-4 border border-blue-500/20">
@@ -228,7 +236,7 @@ const FileEncryptionPage = () => {
                   </p>
                 </div>
                 <Link 
-                  to={`/decrypt-file?id=${success.fileId}`}
+                  to={`/file-decrypt?id=${success.fileId}`}
                   className="w-full md:w-auto px-8 py-4 bg-white text-blue-600 hover:bg-blue-50 text-[11px] font-black uppercase tracking-widest transition-all text-center shadow-xl"
                 >
                   Go_to_Decryption
