@@ -40,6 +40,6 @@ describe('PassphraseStrength Component', () => {
 
   it('should show tips for weak passphrases', () => {
     render(<PassphraseStrength passphrase="abc" />);
-    expect(screen.getByText(/Tip:/)).toBeDefined();
+    expect(screen.getByText(/Recommendation:/)).toBeDefined();
   });
 });

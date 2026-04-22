@@ -17,7 +17,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleEncryptionException(EncryptionException ex) {
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        if (ex.getMessage() != null && ex.getMessage().toLowerCase().startsWith("access denied")) {
+            status = HttpStatus.FORBIDDEN;
+        }
+        return ResponseEntity.status(status).body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

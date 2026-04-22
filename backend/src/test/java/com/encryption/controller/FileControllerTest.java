@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Collections;
 
@@ -65,7 +66,7 @@ public class FileControllerTest {
                 .andExpect(jsonPath("$.fileName").value("test.txt"))
                 .andExpect(jsonPath("$.message").value("File encrypted successfully"));
 
-        verify(auditService).logEncryption(eq(TEST_USER), eq("test.txt"), anyLong());
+        verify(auditService).logEncryption(eq(TEST_USER), eq("test.txt"), anyLong(), eq(fileId));
     }
 
     @Test
@@ -98,11 +99,15 @@ public class FileControllerTest {
             return null;
         }).when(fileService).downloadAndDecryptFileStream(eq(fileId), eq(passphrase), eq(TEST_USER), any(java.io.OutputStream.class));
 
-        mockMvc.perform(post("/api/decrypt/" + fileId)
+        MvcResult mvcResult = mockMvc.perform(post("/api/decrypt/" + fileId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"decrypted_" + fileId + "\""))
+            .andExpect(request().asyncStarted())
+            .andReturn();
+
+        mockMvc.perform(asyncDispatch(mvcResult))
+            .andExpect(status().isOk())
+            .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"decrypted_" + fileId + "\""))
                 .andExpect(content().bytes(decryptedContent));
 
         verify(auditService).logDecryption(eq(TEST_USER), eq(fileId), anyLong());

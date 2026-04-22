@@ -93,7 +93,7 @@ public class SignatureControllerTest {
                 .andExpect(jsonPath("$.signature").value("BASE64_SIGNATURE_VALUE"))
                 .andExpect(jsonPath("$.fileName").value("test.txt"))
                 .andExpect(jsonPath("$.algorithm").value("SHA256withRSA"))
-                .andExpect(jsonPath("$.message").value("File signed successfully"));
+                .andExpect(jsonPath("$.message").value("File signed successfully with embedded signature"));
     }
 
     @Test
@@ -198,8 +198,8 @@ public class SignatureControllerTest {
 
     @Test
     @WithMockUser(username = "test@example.com")
-    @DisplayName("POST /api/signature/verify — missing signature returns 400")
-    public void testVerifySignature_missingSignature_returns400() throws Exception {
+    @DisplayName("POST /api/signature/verify — missing signature falls back to embedded verification")
+    public void testVerifySignature_missingSignature_usesEmbeddedMode() throws Exception {
         byte[] fileContent = "Content".getBytes();
         MockMultipartFile file = new MockMultipartFile(
                 "file", "doc.txt", MediaType.TEXT_PLAIN_VALUE, fileContent);
@@ -209,8 +209,9 @@ public class SignatureControllerTest {
                         .param("signature", " ")
                         .param("publicKey", "SOME_KEY")
                         .with(csrf()))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").exists());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.verificationMode").value("Embedded"))
+                .andExpect(jsonPath("$.valid").value(false));
     }
 
     @Test

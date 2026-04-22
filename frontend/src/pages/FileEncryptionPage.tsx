@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { ShieldCheck, Upload, AlertCircle, RefreshCw, Loader2, Key, Eye, EyeOff, Lock, ArrowLeft, FileCode, Copy } from 'lucide-react';
+import { ShieldCheck, Upload, AlertCircle, RefreshCw, Loader2, Key, Eye, EyeOff, Lock, ArrowLeft, FileCode } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import PassphraseStrength from '../components/PassphraseStrength';
