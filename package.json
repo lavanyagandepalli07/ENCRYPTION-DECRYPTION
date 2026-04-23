@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Root management for Encryption/Decryption project",
   "scripts": {
+    "install": "npm run install:frontend",
+    "build": "npm run build:frontend",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && gradle bootRun",
     "dev": "start npm run dev:frontend & start npm run dev:backend",
