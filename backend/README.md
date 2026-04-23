@@ -4,7 +4,7 @@ Spring Boot 3.x REST API backend for file encryption/decryption with Supabase in
 
 ## Prerequisites
 
-- Java 21+
+- Java 25+
 - Gradle 8.10.2 (or use `./gradlew` wrapper)
 - Supabase account and project
 

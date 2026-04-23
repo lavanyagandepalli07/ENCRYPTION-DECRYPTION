@@ -59,13 +59,13 @@ public class FileController {
             }
 
             // Log the operation with the fileId for later recovery
-            auditService.logEncryption(userId, fileName, (int) file.getSize(), fileId);
+            auditService.logEncryption(userId, fileName, file.getSize(), fileId);
 
             // Return response
             EncryptionResponse response = new EncryptionResponse(
                 fileId,
                 fileName,
-                (int) file.getSize(),
+                file.getSize(),
                 "File encrypted successfully",
                 System.currentTimeMillis()
             );

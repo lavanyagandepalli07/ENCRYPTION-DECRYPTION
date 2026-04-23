@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Java 21+
+- Java 25+
 - Gradle 8.10.2 (included in `backend/gradle-8.10.2/` or system-installed)
 - Supabase account (free tier: https://supabase.com)
 - Environment variables configured in `.env`

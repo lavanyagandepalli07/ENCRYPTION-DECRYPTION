@@ -113,7 +113,9 @@ public class AuditService {
         if (response != null && !response.trim().isEmpty() && !response.equals("null")) {
             try {
                 AuditLogDTO[] logs = objectMapper.readValue(response, AuditLogDTO[].class);
-                auditLogs = Arrays.asList(logs);
+                if (logs != null) {
+                    auditLogs = new ArrayList<>(Arrays.asList(logs));
+                }
             } catch (Exception e) {
                 System.err.println("Failed to parse audit logs JSON: " + e.getMessage() + ". Response: " + response);
             }

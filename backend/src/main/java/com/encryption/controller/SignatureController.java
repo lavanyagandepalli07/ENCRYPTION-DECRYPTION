@@ -91,7 +91,7 @@ public class SignatureController {
             response.put("timestamp", System.currentTimeMillis());
 
             String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
-            auditService.logActionAsync(userId, "FILE_SIGN", file.getOriginalFilename(), (int) file.getSize());
+            auditService.logActionAsync(userId, "FILE_SIGN", file.getOriginalFilename(), file.getSize());
 
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
@@ -146,7 +146,7 @@ public class SignatureController {
             response.put("timestamp", System.currentTimeMillis());
 
             String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
-            auditService.logActionAsync(userId, "SIGNATURE_VERIFY", file.getOriginalFilename(), (int) file.getSize());
+            auditService.logActionAsync(userId, "SIGNATURE_VERIFY", file.getOriginalFilename(), file.getSize());
 
             return ResponseEntity.ok(response);
 

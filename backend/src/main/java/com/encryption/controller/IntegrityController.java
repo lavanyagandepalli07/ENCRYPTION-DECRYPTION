@@ -50,7 +50,7 @@ public class IntegrityController {
             response.put("timestamp", System.currentTimeMillis());
 
             String userId = (authentication != null) ? authentication.getName() : "anonymous-user";
-            auditService.logActionAsync(userId, "INTEGRITY_CHECK", file.getOriginalFilename(), (int) file.getSize());
+            auditService.logActionAsync(userId, "INTEGRITY_CHECK", file.getOriginalFilename(), file.getSize());
 
             return ResponseEntity.ok(response);
 
