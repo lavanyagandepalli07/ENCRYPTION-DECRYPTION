@@ -15,7 +15,7 @@ const DashboardPage = () => {
   ];
 
   return (
-    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+    <div className="space-y-12">
       {/* Header Section */}
       <header className="border-l-4 border-blue-600 pl-8 py-4">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-600/10 border border-blue-500/20 text-blue-500 text-[10px] font-bold tracking-[0.3em] uppercase mb-6">
@@ -37,7 +37,7 @@ const DashboardPage = () => {
           <Link
             key={idx}
             to={tool.to}
-            className="group relative border-card bg-card p-8 transition-all duration-300 hover:border-blue-500/50 hover:bg-blue-600/5 border overflow-hidden"
+            className="group relative border-card bg-card p-8 transition-colors duration-200 hover:border-blue-500/50 hover:bg-blue-600/5 border overflow-hidden"
           >
             {/* Background Accent */}
             <div className="absolute top-0 right-0 p-12 opacity-[0.02] group-hover:opacity-[0.05] transition-opacity">

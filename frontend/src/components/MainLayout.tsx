@@ -21,7 +21,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       </div>
 
       {/* Main Content Area */}
-      <div className={`flex-grow flex flex-col relative min-h-screen transition-all duration-500 ease-in-out ${showSidebar ? 'ml-72' : 'ml-0'}`}>
+      <div className={`flex-grow flex flex-col relative min-h-screen transition-[margin] duration-500 ease-in-out ${showSidebar ? 'ml-72' : 'ml-0'}`}>
         {/* Dynamic Background Grid */}
         <div className="fixed inset-0 z-0 bg-grid opacity-20 pointer-events-none"></div>
         
